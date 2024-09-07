@@ -1,22 +1,13 @@
--- options
 require("options")
-
--- package manager
 require("config.lazy")
-
--- lsp
-require("config.java")
-require("config.lspconfig")
+require("config.cmp")
 require("config.mason")
+require("mappings")
 
--- mapppings
-require "mappings"
+require("lsp.lua_ls")
+require("lsp.bashls")
 
--- colorscheme
-vim.cmd("colorscheme rose-pine")
+vim.cmd("colorscheme catppuccin-mocha")
 
--- neovide
-if vim.g.neovide then
-    require("ginit")
-end
+if vim.g.neovide then require("ginit") end
 

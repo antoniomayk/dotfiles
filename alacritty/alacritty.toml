@@ -1,9 +1,10 @@
 import = [
- "~/.config/alacritty/themes/rose-pine.toml"
+ "~/.config/alacritty/themes/catppuccin_mocha.toml"
 ]
 
 [shell]
 program = "tmux"
+# program = "fish"
 
 [font]
 normal = { family = "JetBrainsMono Nerd Font", style = "Medium" }

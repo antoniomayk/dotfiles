@@ -1,6 +1,16 @@
+--
+-- IMPORTS
+--
+
 local opt = vim.opt
 local o = vim.o
 local g = vim.g
+local wo = vim.wo
+local api = vim.api
+
+--
+-- OPTIONS
+--
 
 o.laststatus = 3
 o.showmode = false
@@ -35,9 +45,17 @@ o.undofile = true
 
 o.updatetime = 250
 
+o.shell = "fish"
+
 opt.whichwrap:append("<>[]hl")
+
+wo.wrap = false
 
 g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
+
+g.mapleader = " "
+g.maplocalleader = "\\"
+

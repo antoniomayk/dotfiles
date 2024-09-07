@@ -1,11 +1,14 @@
 return {
-  "stevearc/conform.nvim",
-  config = function()
-    require("conform").setup({
-      formatters_by_ft = {
-        lua = { "stylua" },
-        python = { "isort", "black" },
-      },
-    })
-  end,
+  {
+    "stevearc/conform.nvim",
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          lua = { "stylua" },
+          python = { "isort", "black" },
+          bash = { "shfmt" },
+        },
+      })
+    end,
+  },
 }

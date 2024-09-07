@@ -1,9 +1,7 @@
-require("mason").setup({})
-require("mason-lspconfig").setup({
-  ensure_installed = { "jdtls", "lua_ls", "rust_analyzer" },
-  handlers = {
-    function(server_name)
-      require("lspconfig")[server_name].setup({})
-    end,
-  },
+local mason = require("mason")
+local mason_lsp = require("mason-lspconfig")
+
+mason.setup({})
+mason_lsp.setup({
+  ensure_installed = { "lua_ls" },
 })
