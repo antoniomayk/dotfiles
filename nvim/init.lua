@@ -25,10 +25,20 @@ vim.o.timeoutlen = 400
 vim.o.undofile = true
 vim.o.updatetime = 250
 vim.o.shell = "fish"
+vim.o.list = true
 
 vim.opt.fillchars = { eob = " " }
 vim.opt.shortmess:append("sI")
 vim.opt.whichwrap:append("<>[]hl")
+vim.opt.termguicolors = true
+vim.opt.listchars = {
+  tab = '·┈',
+  eol = '⏎',
+  space = '·',
+  trail = '␣',
+  extends = '«',
+  precedes = '»',
+}
 
 -- window options
 
