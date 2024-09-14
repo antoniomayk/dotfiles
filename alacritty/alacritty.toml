@@ -4,7 +4,6 @@ import = [
 
 [shell]
 program = "tmux"
-# program = "fish"
 
 [font]
 normal = { family = "CaskaydiaCove Nerd Font", style = "Medium" }
