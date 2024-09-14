@@ -681,7 +681,7 @@ return {
       { "<leader>,", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch buffer" },
       { "<leader>/", function() require('telescope').extensions.live_grep_args.live_grep_args() end, desc = "Grep (root dir)" },
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
-      { "<leader><space>", "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<cr>", desc = "Find files (root dir)", }, { "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
+      { "<leader><space>", "<cmd>Telescope find_files<cr>", desc = "Find files (root dir)", }, { "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
       { "<leader>fa", "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<cr>", desc = "Find all files (Root Dir)" },
       { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files (Root Dir)" },
       { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find files (git-files)" },
