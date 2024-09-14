@@ -1089,6 +1089,7 @@ return {
           float_win_config = {
             auto_focus = true,
             open_split = "horizontal",
+            border = "rounded",
           },
         },
       }
