@@ -579,6 +579,7 @@ return {
         bash = { "shfmt" },
         fish = { "fish_indent" },
         sh = { "shfmt" },
+        toml = { "taplo" },
       },
     },
   },
