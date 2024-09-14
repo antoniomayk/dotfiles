@@ -1020,8 +1020,16 @@ return {
             expand = function(args) require("luasnip").lsp_expand(args.body) end,
           },
           window = {
-            completion = cmp.config.window.bordered(),
-            documentation = cmp.config.window.bordered(),
+            completion = {
+              border = "rounded",
+              winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+              scrollbar = true,
+            },
+            documentation = {
+              border = "rounded",
+              winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+              scrollbar = true,
+            },
           },
           mapping = cmp.mapping.preset.insert({
             ["<C-b>"] = cmp.mapping.scroll_docs(-4),
