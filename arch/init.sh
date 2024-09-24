@@ -19,7 +19,12 @@ is_nvidia() {
 URL_PIKAUR="https://aur.archlinux.org/pikaur.git"
 
 if ! has_command pikaur; then
-	cd $(mktemp -d) && sudo pacman -S --needed base-devel git && git clone $URL_PIKAUR && cd pikaur && makepkg -fsri && cd $HOME
+	cd "$(mktemp -d)" &&
+		sudo pacman -S --needed base-devel git &&
+		git clone $URL_PIKAUR &&
+		cd pikaur &&
+		makepkg -fsri &&
+		cd "$HOME"
 fi
 
 pikaur -S --needed \
@@ -31,7 +36,25 @@ pikaur -S --needed \
 	noto-fonts-cjk noto-fonts-emoji noto-fonts-extra nordvpn-bin docker \
 	docker-compose papirus-icon-theme qemu-full dnsmasq graphviz inetutils \
 	net-tools ninja dart-sass edk2-shell gnome-browser-connector insomnia-bin \
-	visual-studio-code-bin youtube-music-bin adw-gtk3
+	visual-studio-code-bin youtube-music-bin adw-gtk3 coursier taplo-cli obsidian \
+	lazygit coursier man sbctl android-emulator android-sdk-build-tools \
+	android-sdk-platform-tools android-udev android-sdk-cmdline-tools-latest flutter
+
+if has_command flutter; then
+	sudo chown -R "$USER:$USER" /opt/android-sdk
+	sudo chmod -R g+rw /opt/android-sdk/
+
+	echo "fish_add_path /opt/android-sdk/emulator/" | fish -c "source -"
+	echo "fish_add_path /opt/android-sdk/platform-tools/" | fish -c "source -"
+	echo "fish_add_path /opt/android-sdk/cmdline-tools/latest/bin/" | fish -c "source -"
+fi
+
+if has_command coursier; then
+	coursier install sbt
+	coursier install bloop --only-prebuilt=true
+
+	echo "fish_add_path $HOME/.local/share/coursier/bin/" | fish -c "source -"
+fi
 
 if has_command bluetoothctl; then
 	sudo systemctl enable bluetooth.service
@@ -48,21 +71,29 @@ fi
 
 if has_command nordvpn; then
 	sudo groupadd -r nordvpn
-	sudo gpasswd -a $USER nordvpn
-	sudo usermod -aG nordvpn $USER
+	sudo gpasswd -a "$USER" nordvpn
+	sudo usermod -aG nordvpn "$USER"
 	sudo systemctl enable nordvpnd
 fi
 
 if has_command docker; then
-	sudo usermod -aG docker $USER
+	sudo usermod -aG docker "$USER"
 	sudo systemctl enable docker.service docker.socket
 fi
 
 if has_command virt-manager; then
-	sudo usermod -aG libvirt $USER
+	sudo usermod -aG libvirt "$USER"
 	sudo virsh net-start default
 	sudo systemctl enable libvirtd
 	sudo systemctl start libvirtd
+fi
+
+#------------------------------------------------------------
+# EDK2 SHELL
+#------------------------------------------------------------
+
+if [ -e "/usr/share/edk2-shell/x64/Shell.efi" ]; then
+	sudo cp /usr/share/edk2-shell/x64/Shell.efi /boot/shellx64.efi
 fi
 
 #------------------------------------------------------------
@@ -93,8 +124,29 @@ curl -Lfs $URL_RUSTUP | bash -s -- -y
 curl -Lfs $URL_SDKMAN | bash
 curl -Lfs $URL_NVM | bash
 
-cargo install cargo-binstall
-cargo binstall cargo-nextest --secure
+if has_command sdk; then
+	sdk install gradle
+	sdk install java 17.0.12-tem
+fi
+
+if has_command nvm; then
+	nvm install node
+fi
+
+if has_command cabal; then
+	cabal update
+	cabal install bhoogle
+	cabal install fast-tags
+	cabal install hoogle
+
+	hoogle generate
+fi
+
+if has_command bluetoothctl; then
+	cargo install cargo-binstall
+	cargo binstall cargo-nextest --secure
+	cargo install tree-sitter-cli
+fi
 
 #------------------------------------------------------------
 # FISH CONFIG
@@ -103,26 +155,18 @@ cargo binstall cargo-nextest --secure
 # SHELL VARIABLES
 
 if is_nvidia; then
-	echo "$(
-		cat <<-EOF
-			    set -Ux LD_LIBRARY_PATH /opt/cuda/lib64
-		EOF
-	)" | fish -c "source -"
+	echo "set -Ux LD_LIBRARY_PATH /opt/cuda/lib64" | fish -c "source -"
 fi
 
 # SHELL PATH
 
 if is_nvidia; then
-	echo "$(
-		cat <<-EOF
-			    fish_add_path /opt/cuda/bin
-		EOF
-	)" | fish -c "source -"
+	echo "fish_add_path /opt/cuda/bin" | fish -c "source -"
 fi
 
 # KORA
 
-mkdir -p $HOME/.local/bin
+mkdir -p "$HOME/.local/bin"
 
 echo "$(
 	cat <<-EOF
@@ -133,7 +177,7 @@ echo "$(
 		rm -rf ~/.profile
 		rm -rf ~/.python_history
 	EOF
-)" >$HOME/.local/bin/kora
+)" >"$HOME/.local/bin/kora"
 
 echo "$(
 	cat <<-EOF
@@ -156,6 +200,7 @@ echo "$(
 		alias -s r   "rm -r"
 		alias -s rf  "rm -rf"
 		alias -s hx  "helix"
+		alias -s nv  "neovide --fork"
 	EOF
 )" | fish -c "source -"
 
@@ -196,10 +241,10 @@ echo "$(
 # CREATE CONFIG FOLDERS
 #------------------------------------------------------------
 
-ln -s $HOME/Projects/dotfiles/tmux $HOME/.config/tmux
-ln -s $HOME/Projects/dotfiles/nvim $HOME/.config/nvim
-ln -s $HOME/Projects/dotfiles/helix $HOME/.config/helix
-ln -s $HOME/Projects/dotfiles/bottom $HOME/.config/bottom
-ln -s $HOME/Projects/dotfiles/bat $HOME/.config/bat
-ln -s $HOME/Projects/dotfiles/alacritty $HOME/.config/alacritty
-ln -s $HOME/Projects/dotfiles/qtile $HOME/.config/qtile
+ln -s "$HOME/Projects/dotfiles/tmux" "$HOME/.config/tmux"
+ln -s "$HOME/Projects/dotfiles/nvim" "$HOME/.config/nvim"
+ln -s "$HOME/Projects/dotfiles/helix" "$HOME/.config/helix"
+ln -s "$HOME/Projects/dotfiles/bottom" "$HOME/.config/bottom"
+ln -s "$HOME/Projects/dotfiles/bat" "$HOME/.config/bat"
+ln -s "$HOME/Projects/dotfiles/alacritty" "$HOME/.config/alacritty"
+ln -s "$HOME/Projects/dotfiles/qtile" "$HOME/.config/qtile"
