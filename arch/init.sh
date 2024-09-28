@@ -28,7 +28,7 @@ if ! has_command pikaur; then
 fi
 
 pikaur -S --needed \
-	helix fd xclip bat fish ripgrep exa base-devel zip less git clang \
+	zip helix fd xclip bat fish ripgrep exa base-devel zip less git clang \
 	cuda-tools tmux tmux-plugin-manager cmake llvm v4l-utils bottom vivaldi \
 	brave-bin alacritty tk tree neovim neovide virt-manager pavucontrol unrar \
 	unzip ttf-jetbrains-mono-nerd ttf-firacode-nerd ttf-cascadia-code-nerd \
