@@ -10,6 +10,7 @@ return {
       "lua",
       "vim",
       "rust",
+      "haskell",
       "java",
       "scala",
       "kotlin",
