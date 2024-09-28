@@ -124,29 +124,25 @@ curl -Lfs $URL_RUSTUP | bash -s -- -y
 curl -Lfs $URL_SDKMAN | bash
 curl -Lfs $URL_NVM | bash
 
-if has_command sdk; then
-	sdk install gradle
-	sdk install java 17.0.12-tem
-fi
+echo "$(
+	cat <<-EOF
+		sdk install gradle
+		sdk install java 17.0.12-tem
 
-if has_command nvm; then
-	nvm install node
-fi
+		nvm install node
 
-if has_command cabal; then
-	cabal update
-	cabal install bhoogle
-	cabal install fast-tags
-	cabal install hoogle
+		cabal update
+		cabal install bhoogle
+		cabal install fast-tags
+		cabal install hoogle
 
-	hoogle generate
-fi
+		hoogle generate
 
-if has_command bluetoothctl; then
-	cargo install cargo-binstall
-	cargo binstall cargo-nextest --secure
-	cargo install tree-sitter-cli
-fi
+		cargo install cargo-binstall
+		cargo binstall cargo-nextest --secure
+		cargo install tree-sitter-cli
+	EOF
+)" | fish -c "source -"
 
 #------------------------------------------------------------
 # FISH CONFIG
