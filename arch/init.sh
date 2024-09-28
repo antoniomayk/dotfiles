@@ -38,7 +38,8 @@ pikaur -S --needed \
 	net-tools ninja dart-sass edk2-shell gnome-browser-connector insomnia-bin \
 	visual-studio-code-bin youtube-music-bin adw-gtk-theme coursier taplo-cli obsidian \
 	lazygit coursier man sbctl android-emulator android-sdk-build-tools \
-	android-sdk-platform-tools android-udev android-sdk-cmdline-tools-latest flutter
+	android-sdk-platform-tools android-udev android-sdk-cmdline-tools-latest flutter \
+	bluez-utils
 
 if has_command flutter; then
 	sudo chown -R "$USER:$USER" /opt/android-sdk
