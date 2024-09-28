@@ -36,7 +36,7 @@ pikaur -S --needed \
 	noto-fonts-cjk noto-fonts-emoji noto-fonts-extra nordvpn-bin docker \
 	docker-compose papirus-icon-theme qemu-full dnsmasq graphviz inetutils \
 	net-tools ninja dart-sass edk2-shell gnome-browser-connector insomnia-bin \
-	visual-studio-code-bin youtube-music-bin adw-gtk3 coursier taplo-cli obsidian \
+	visual-studio-code-bin youtube-music-bin adw-gtk-theme coursier taplo-cli obsidian \
 	lazygit coursier man sbctl android-emulator android-sdk-build-tools \
 	android-sdk-platform-tools android-udev android-sdk-cmdline-tools-latest flutter
 
