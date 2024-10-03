@@ -142,6 +142,10 @@ echo "$(
 		cabal update
 		cabal install bhoogle
 		cabal install fast-tags
+		cabal install cabal-gild
+		cabal install stylish-haskell
+		cabal install fourmolu
+		cabal install cabal-gild
 		cabal install hoogle
 
 		hoogle generate
@@ -149,6 +153,8 @@ echo "$(
 		cargo install cargo-binstall
 		cargo binstall cargo-nextest --secure
 		cargo install tree-sitter-cli
+
+		rustup component add rust-analyzer
 	EOF
 )" | fish -c "source -"
 
