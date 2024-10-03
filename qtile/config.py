@@ -1,38 +1,33 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+import os
+import subprocess
 
-from libqtile import bar, layout, widget
+from libqtile import bar, hook, layout
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from qtile_extras import widget
+from qtile_extras.widget.decorations import BorderDecoration
 
 from color import colors
 
+###############################
+# HOOKS                       #
+###############################
+
+
+@hook.subscribe.startup_once
+def autostart():
+    home = os.path.expanduser(
+        "~/.config/qtile/autostart.sh"
+    )  # path to my script, under my user directory
+    subprocess.call([home])
+
+
+###############################
+# MAPPINGS                    #
+###############################
+
 mod = "mod4"
-terminal = guess_terminal()
 
 # fmt: off
 keys = [
@@ -51,7 +46,7 @@ keys = [
     Key([mod, "control"],   "k",      lazy.layout.grow_up(),              desc="Grow window up"),
     Key([mod],              "n",      lazy.layout.normalize(),            desc="Reset all window sizes"),
     Key([mod, "shift"],     "Return", lazy.layout.toggle_split(),         desc="Toggle between split and unsplit sides of stack"),
-    Key([mod],              "Return", lazy.spawn(terminal),               desc="Launch terminal"),
+    Key([mod],              "Return", lazy.spawn(guess_terminal()),       desc="Launch terminal"),
     Key([mod],              "Tab",    lazy.next_layout(),                 desc="Toggle between layouts"),
     Key([mod],              "w",      lazy.window.kill(),                 desc="Kill focused window"),
     Key([mod],              "f",      lazy.window.toggle_fullscreen(),    desc="Toggle fullscreen on the focused window"),
@@ -82,60 +77,6 @@ for i in groups:
         ]
     )
 
-layouts = [
-    layout.Columns(
-        border_width=2,
-        border_focus=colors["magenta"],
-        border_focus_stack=colors["magenta"],
-        border_normal=colors["green"],
-        border_normal_stack=colors["green"],
-        border_on_single=True,
-        margin=4,
-        margin_on_single=4,
-    ),
-    layout.Max(),
-]
-
-widget_defaults = dict(
-    font="JetBrainsMono Nerd Font",
-    fontsize=12,
-    padding=3,
-    foreground=colors["fg"],
-    background=colors["bg"],
-)
-extension_defaults = widget_defaults.copy()
-
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.CurrentLayout(),
-                widget.Sep(),
-                widget.GroupBox(
-                    active=colors["magenta"],
-                    highlight_method="line",
-                    borderwidth=2,
-                    this_current_screen_border=colors["magenta"],
-                    this_screen_border=colors["magenta"],
-                    highlight_color=[colors["black"], colors["black"]],
-                    fmt="{}",
-                ),
-                widget.Sep(),
-                widget.Prompt(),
-                widget.Sep(),
-                widget.WindowName(),
-                widget.Sep(),
-                widget.Systray(),
-                widget.Sep(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.Sep(),
-                widget.QuickExit(),
-            ],
-            24,
-        ),
-    ),
-]
-
 mouse = [
     Drag(
         [mod],
@@ -149,12 +90,228 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
+###############################
+# LAYOUTS                     #
+###############################
+
+layouts = [
+    layout.Columns(
+        border_width=2,
+        border_focus=colors["magenta"],
+        border_focus_stack=colors["magenta"],
+        border_normal=colors["fg_gutter"],
+        border_normal_stack=colors["fg_gutter"],
+        border_on_single=True,
+        margin=4,
+        margin_on_single=4,
+    ),
+    layout.Max(
+        margin=4,
+        border_width=2,
+        border_focus=colors["magenta"],
+        border_normal=colors["fg_gutter"],
+    ),
+]
+
+###############################
+# DEFAULTS                    #
+###############################
+
+widget_defaults = dict(
+    font="CaskaydiaCove Nerd Font SemiBold",
+    fontsize=12,
+    padding=4,
+    foreground=colors["fg"],
+)
+
+extension_defaults = widget_defaults.copy()
+
+###############################
+# SCREENS                     #
+###############################
+
+screens = [
+    Screen(
+        top=bar.Bar(
+            [
+                widget.Spacer(length=8),
+                # widget.Sep(
+                #     foreground=colors["fg_gutter"],
+                #     padding=10,
+                #     linewidth=2,
+                #     size_percent=80,
+                # ),
+                widget.GroupBox(
+                    active=colors["fg_gutter"],
+                    highlight_method="text",
+                    rounded=False,
+                    borderwidth=2,
+                    this_current_screen_border=colors["magenta"],
+                    hide_unused=True,
+                    fmt="{}",
+                ),
+                widget.Sep(
+                    foreground=colors["fg_gutter"],
+                    padding=10,
+                    linewidth=2,
+                    size_percent=80,
+                ),
+                widget.WindowName(),
+                widget.Prompt(),
+                widget.Systray(),
+                widget.Sep(
+                    foreground=colors["fg_gutter"],
+                    padding=10,
+                    linewidth=2,
+                    size_percent=80,
+                ),
+                widget.CPU(
+                    format="  Cpu: {load_percent}%",
+                    foreground=colors["orange"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["orange"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Spacer(length=8),
+                widget.Memory(
+                    format="{MemUsed: .0f}{mm}",
+                    fmt="  Mem: {} used",
+                    foreground=colors["cyan"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["cyan"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Spacer(length=8),
+                widget.DF(
+                    visible_on_warn=False,
+                    partition="/",
+                    format="{uf}{m} free",
+                    fmt="  Disk: {}",
+                    foreground=colors["yellow"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["yellow"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Sep(
+                    foreground=colors["fg_gutter"],
+                    padding=10,
+                    linewidth=2,
+                    size_percent=80,
+                ),
+                widget.Bluetooth(
+                    default_text=" {num_connected_devices}",
+                    device_format="󰾰 {name}{battery_level} [{symbol}]",
+                    adapter_format="󰠿 {name} [{powered}{discovery}]",
+                    fmt="{}",
+                    foreground=colors["blue"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["blue"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Spacer(length=8),
+                widget.Volume(
+                    step=1,
+                    fmt="  {}",
+                    foreground=colors["blue"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["blue"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Spacer(length=8),
+                widget.KeyboardLayout(
+                    fmt="󰌌 {}",
+                    foreground=colors["blue"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["blue"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Spacer(length=8),
+                widget.Wlan(
+                    fmt="  {}",
+                    format="{essid} {percent:2.0%}",
+                    foreground=colors["blue"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["blue"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                widget.Spacer(length=8),
+                widget.Clock(
+                    format="  %a, %b %d - %H:%M",
+                    foreground=colors["blue"],
+                    decorations=[
+                        BorderDecoration(
+                            colour=colors["blue"], border_width=[0, 0, 2, 0]
+                        )
+                    ],
+                ),
+                # widget.Sep(
+                #     foreground=colors["fg_gutter"],
+                #     padding=10,
+                #     linewidth=2,
+                #     size_percent=80,
+                # ),
+                # widget.QuickExit(
+                #     default_text="  Shutdown",
+                #     countdown_format=" {} Seconds",
+                #     fmt="{}",
+                #     foreground=colors["red"],
+                #     decorations=[
+                #         BorderDecoration(
+                #             colour=colors["red"], border_width=[0, 0, 2, 0]
+                #         )
+                #     ],
+                # ),
+                # widget.Sep(
+                #     foreground=colors["fg_gutter"],
+                #     padding=10,
+                #     linewidth=2,
+                #     size_percent=80,
+                # ),
+                widget.Spacer(length=8),
+            ],
+            32,
+            margin=0,
+            background=colors["bg"],
+            # border_width=2,
+            # border_color=colors["white"],
+        ),
+        wallpaper="~/.config/qtile/background.jpg",
+        wallpaper_mode="stretch",
+    ),
+]
+
+###############################
+# GLOBAL VARIABLES            #
+###############################
+
 dgroups_key_binder = None
-dgroups_app_rules = []  # type: list
-follow_mouse_focus = True
-bring_front_click = False
-floats_kept_above = True
+
+dgroups_app_rules = []
+
+wl_input_rules = None
+
+wl_xcursor_theme = None
+
+wl_xcursor_size = 24
+
 cursor_warp = False
+
+floats_kept_above = True
+
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -167,14 +324,17 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
+
+follow_mouse_focus = True
+
+bring_front_click = False
+
 auto_fullscreen = False
+
 focus_on_window_activation = "smart"
+
 reconfigure_screens = True
 
 auto_minimize = True
-
-wl_input_rules = None
-wl_xcursor_theme = None
-wl_xcursor_size = 24
 
 wmname = "LG3D"
