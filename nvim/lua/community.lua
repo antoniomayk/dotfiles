@@ -18,6 +18,7 @@ return {
   -- diagnostics
   -- { import = "astrocommunity.diagnostics.lsp_lines-nvim" },
   { import = "astrocommunity.diagnostics.trouble-nvim" },
+  { import = "astrocommunity.editing-support.conform-nvim" },
   -- keybindings
   { import = "astrocommunity.keybinding.nvcheatsheet-nvim" },
   -- pack
