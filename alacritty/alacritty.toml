@@ -1,6 +1,4 @@
-import = [
- "~/.config/alacritty/themes/catppuccin_mocha.toml"
-]
+import = ["~/.config/alacritty/themes/catppuccin_mocha.toml"]
 
 [shell]
 program = "tmux"
