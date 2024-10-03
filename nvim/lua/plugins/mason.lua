@@ -10,7 +10,28 @@ return {
     -- overrides `require("mason-lspconfig").setup(...)`
     opts = {
       ensure_installed = {
+        "angularls",
+        "basedpyright",
+        "bashls",
+        "clangd",
+        "cmake",
+        "cssls",
+        "emmet_ls",
+        "eslint",
+        "hls",
+        "css_variables",
+        "cssls",
+        "cssmodules_ls",
+        "tailwindcss",
+        "unocss",
+        "html",
+        "jdtls",
+        "jsonls",
+        "lemminx",
         "lua_ls",
+        "ruff",
+        "taplo",
+        "yamlls",
         -- add more arguments for adding more language servers
       },
     },
@@ -21,7 +42,17 @@ return {
     -- overrides `require("mason-null-ls").setup(...)`
     opts = {
       ensure_installed = {
+        "black",
+        "google-java-format",
+        "isort",
+        "prettierd",
+        "ruff",
+        "shfmt",
         "stylua",
+        "checkstyle",
+        "ruff",
+        "selene",
+        "shellcheck",
         -- add more arguments for adding more null-ls sources
       },
     },
@@ -31,7 +62,14 @@ return {
     -- overrides `require("mason-nvim-dap").setup(...)`
     opts = {
       ensure_installed = {
+        "bash",
+        "codelldb",
         "python",
+        "dart",
+        "haskell",
+        "javadbg",
+        "javatest",
+        "js",
         -- add more arguments for adding more debuggers
       },
     },
