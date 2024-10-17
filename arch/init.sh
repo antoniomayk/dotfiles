@@ -28,20 +28,20 @@ if ! has_command pikaur; then
 fi
 
 pikaur -S --needed \
-	zip helix fd xclip bat fish ripgrep exa base-devel zip less git clang \
-	cuda-tools tmux tmux-plugin-manager cmake llvm v4l-utils bottom vivaldi \
-	brave-bin alacritty tk tree neovim neovide virt-manager pavucontrol unrar \
-	unzip ttf-jetbrains-mono-nerd ttf-firacode-nerd ttf-cascadia-code-nerd \
-	ttf-droid ttf-monaco ttf-fira-sans ttf-liberation noto-fonts \
-	noto-fonts-cjk noto-fonts-emoji noto-fonts-extra nordvpn-bin docker \
-	docker-compose papirus-icon-theme qemu-full dnsmasq graphviz inetutils \
-	net-tools ninja dart-sass edk2-shell gnome-browser-connector insomnia-bin \
-	visual-studio-code-bin youtube-music-bin adw-gtk-theme coursier taplo-cli obsidian \
-	lazygit coursier man sbctl android-emulator android-sdk-build-tools \
-	android-sdk-platform-tools android-udev android-sdk-cmdline-tools-latest flutter \
-	bluez-utils lxappearance picom bluez qtile-extras-git alsa-utils python-iwlib iw \
-	python-dbus-next python-psutil yaru-colors-gtk-theme gdb uthash deno ranger \
-	pulsemixer lightdm-gtk-greeter-settings
+	adw-gtk-theme alacritty alsa-utils android-emulator android-sdk-build-tools android-sdk-cmdline-tools-latest \
+	android-sdk-platform-tools android-udev base-devel bat bluez bluez-utils bottom brave-bin cbindgen \
+	clang cmake cmus conky coursier cuda-tools dart-sass dbus deno dmidecode dnsmasq docker docker-compose \
+	edk2-shell epiphany exa fd feh fish flameshot flutter gdb git glslang graphviz helix image-roll inetutils \
+	inkscape insomnia-bin iw jdk11-openjdk jdk17-openjdk krita lazydocker lazygit less libclc lightdm-gtk-greeter-settings \
+	llvm lsb-release lxappearance lxsession man meson nemo nemo-preview neofetch neovide neovim net-tools ninja nitrogen \
+	nordvpn-bin noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra nvidia-settings nvme-cli obsidian obs-studio \
+	papirus-icon-theme pavucontrol pciutils pfetch picom playerctl pulsemixer python-dbus-next python-distutils-extra \
+	python-iwlib python-mako python-mpd2 python-packaging python-ply python-psutil python-setuptools python-yaml qemu-full \
+	qtile-extras-git ranger ripgrep rust-bindgen sbctl spirv-llvm-translator subversion taplo-cli thunar tk tmux \
+	tmux-plugin-manager trash trash-cli tree ttf-cascadia-code-nerd ttf-droid ttf-firacode-nerd ttf-fira-sans \
+	ttf-jetbrains-mono-nerd ttf-liberation ttf-monaco ueberzug unrar unzip usbutils uthash v4l-utils virt-manager \
+	visual-studio-code-bin vivaldi vlc wmctrl xclip xdg-user-dirs xdotool xorg-xmessage xtrans \
+	yaru-colors-gtk-theme youtube-music-bin zig zip zls
 
 if has_command flutter; then
 	sudo chown -R "$USER:$USER" /opt/android-sdk
@@ -147,12 +147,16 @@ echo "$(
 		cabal install fourmolu
 		cabal install cabal-gild
 		cabal install hoogle
+		cabal install htlint
+		cabal install haskell-debug-adapter
+		cabal install ghci-dap
 
 		hoogle generate
 
 		cargo install cargo-binstall
 		cargo binstall cargo-nextest --secure
 		cargo install tree-sitter-cli
+		cargo install bluetui
 
 		rustup component add rust-analyzer
 	EOF
