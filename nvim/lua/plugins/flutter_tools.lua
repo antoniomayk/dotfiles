@@ -27,6 +27,7 @@ return {
       }, opts)
     end,
   }, -- add lsp plugin
+
   {
     "AstroNvim/astrolsp",
     ---@param opts AstroLSPOpts
