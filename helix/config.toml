@@ -8,6 +8,7 @@ undercurl = true
 scrolloff = 0
 true-color = true
 rulers = [80]
+lsp.enable = false
 
 [editor.cursor-shape]
 insert = "bar"
