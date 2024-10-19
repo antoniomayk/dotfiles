@@ -1,5 +1,3 @@
--- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- Customize Mason plugins
 
 ---@type LazySpec
@@ -10,28 +8,8 @@ return {
     -- overrides `require("mason-lspconfig").setup(...)`
     opts = {
       ensure_installed = {
-        "angularls",
-        "basedpyright",
-        "bashls",
-        "clangd",
-        "cmake",
-        "cssls",
-        "emmet_ls",
-        "eslint",
-        "hls",
-        "css_variables",
-        "cssls",
-        "cssmodules_ls",
-        "tailwindcss",
-        "unocss",
-        "html",
-        "jdtls",
-        "jsonls",
-        "lemminx",
         "lua_ls",
-        "ruff",
-        "taplo",
-        "yamlls",
+        -- "clangd",
         -- add more arguments for adding more language servers
       },
     },
@@ -53,6 +31,7 @@ return {
         "ruff",
         "selene",
         "shellcheck",
+        "xmlformatter",
         -- add more arguments for adding more null-ls sources
       },
     },
@@ -62,14 +41,7 @@ return {
     -- overrides `require("mason-nvim-dap").setup(...)`
     opts = {
       ensure_installed = {
-        "bash",
-        "codelldb",
         "python",
-        "dart",
-        "haskell",
-        "javadbg",
-        "javatest",
-        "js",
         -- add more arguments for adding more debuggers
       },
     },
