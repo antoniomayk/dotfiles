@@ -1,0 +1,8 @@
+* {
+    background:     #000000FF; // base
+    background-alt: #000000FF; // base
+    foreground:     #F2F2F2FF; // rosewater
+    selected:       #F2F2F2FF; // rosewater
+    active:         #A5A5A5FF; // green
+    urgent:         #888888FF; // red
+}

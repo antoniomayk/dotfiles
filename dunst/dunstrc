@@ -1,0 +1,23 @@
+[global]
+frame_color = "#000000"
+separator_color= frame
+corner_radius=4
+origin = bottom-right
+offset = 16x16
+frame_width=4
+separator_height = 4
+font = JetBrainsMono Nerd Font 10
+width = 512
+
+[urgency_low]
+background = "#FFFFFF"
+foreground = "#363636"
+
+[urgency_normal]
+background = "#FFFFFF"
+foreground = "#363636"
+
+[urgency_critical]
+background = "#FFFFFF"
+foreground = "#363636"
+frame_color = "#000000"
