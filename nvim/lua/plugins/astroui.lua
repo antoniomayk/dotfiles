@@ -3,7 +3,7 @@ return {
   "AstroNvim/astroui",
   ---@type AstroUIOpts
   opts = {
-    colorscheme = "catppuccin-latte",
+    colorscheme = "default",
     highlights = {
       init = {},
     },

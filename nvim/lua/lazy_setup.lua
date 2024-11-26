@@ -14,7 +14,7 @@ require("lazy").setup({
   { import = "community" },
   { import = "plugins" },
 } --[[@as LazySpec]], {
-  install = { colorscheme = { "catppuccin-latte" } },
+  install = { colorscheme = { "default" } },
   ui = { backdrop = 100 },
   performance = {
     rtp = {

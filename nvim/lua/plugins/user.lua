@@ -1,32 +1,6 @@
 ---@type LazySpec
 return {
   {
-    dir = "~/.config/nvim/theme",
-    name = "catppuccin",
-    opts = {
-      term_colors = true,
-      no_italic = false, -- Force no italic
-      no_bold = false, -- Force no bold
-      no_underline = false, -- Force no underline
-      styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-        comments = { "italic" }, -- Change the style of comments
-        conditionals = { "bold", "italic" },
-        loops = {},
-        functions = {},
-        keywords = { "bold" },
-        strings = {},
-        variables = {},
-        numbers = {},
-        booleans = { "bold" },
-        properties = { "bold" },
-        types = {},
-        operators = {},
-        -- miscs = {}, -- Uncomment to turn off hard-coded styles
-      },
-    },
-  },
-
-  {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
     opts = {

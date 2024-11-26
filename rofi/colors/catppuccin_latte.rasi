@@ -1,8 +1,0 @@
-* {
-    background:     #ffffffFF; // base
-    background-alt: #ffffffFF; // base
-    foreground:     #000000FF; // teal
-    selected:       #000000FF; // teal
-    active:         #0A0A0AFF; // green
-    urgent:         #6F6F6FFF; // rosewater
-}

@@ -20,6 +20,7 @@ return {
         foldcolumn = "0",
       },
       opt = {
+        termguicolors = false,
         relativenumber = true,
         number = true,
         spell = false,
@@ -39,8 +40,8 @@ return {
           vertright = "┣",
           verthoriz = "╋",
           eob = " ",
-          foldopen = "⏷",
-          foldclose = "⏵",
+          foldopen = "",
+          foldclose = "",
         },
         list = false,
         listchars = {

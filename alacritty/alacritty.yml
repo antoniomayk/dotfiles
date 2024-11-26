@@ -1,0 +1,34 @@
+import:
+ - ~/.config/alacritty/themes/campbell.yaml
+
+env:
+  TERM: alacritty
+
+window:
+  dimensions:
+   columns: 120
+   lines: 30
+  padding:
+   x: 8
+   y: 8
+  opacity: 1.0
+
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Medium
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Bold
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Italic
+  bold_italic:
+    family: JetBrainsMono Nerd Font
+    style: Bold Italic
+  size: 10.0
+
+shell:
+ program: tmux
+
+live_config_reload: true
