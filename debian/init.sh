@@ -17,6 +17,8 @@ echo -e "$(
 # REPOSITORIES
 ###########################################################
 
+sudo apt install curl gnupg nala
+
 echo -e "$(
 	cat <<-EOF
 		deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware\n
