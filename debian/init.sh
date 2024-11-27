@@ -87,6 +87,7 @@ THEMES_CURSOR='mint-cursor-themes'
 THEMES_GTK='mint-l-theme'
 TUI='ranger'
 VIDEO='xplayer celluloid'
+VBOX='virtualbox-guest-additions-iso'
 WALLPAPERS='mint-backgrounds-vanessa mint-backgrounds-vera mint-backgrounds-victoria mint-backgrounds-wilma'
 WINDOW_MANAGER='cinnamon'
 
@@ -96,11 +97,22 @@ WINDOW_MANAGER='cinnamon'
 
 sudo nala update
 
-sudo nala install $BROWSER $CLI $CONTAINERIZATI $CPP $DOCS $EDITORS $FONTS $GREETER $ICONS $IMAGE $JAVA $JAVASCRIPT $PAINT $PYTHON $READER $SCM $SHELLS $TERMINAL $THEMES_CURSOR $THEMES_GTK $TUI $VIDEO $WALLPAPERS $WINDOW_MANAGER
+sudo nala install $BROWSER $CLI $CONTAINERIZATI $CPP $DOCS $EDITORS $FONTS $GREETER $ICONS $IMAGE $JAVA $JAVASCRIPT $PAINT $PYTHON $READER $SCM $SHELLS $TERMINAL $THEMES_CURSOR $THEMES_GTK $TUI $VIDEO $WALLPAPERS $WINDOW_MANAGER $VBOX
 
 sudo nala remove zutty
 
 sudo nala upgrade
+
+###########################################################
+# VIRTUAL BOX GUEST
+###########################################################
+
+sudo nala install dkms linux-headers-$(uname -r) &&
+	sudo mkdir -p /mnt/vboxiso &&
+	sudo mount -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /mnt/vboxiso &&
+	sudo sh /mnt/vboxiso/VBoxLinuxAdditions.run &&
+	sudo unmount /mnt/vboxiso &&
+	sudo rmdir /mnt/vboxiso
 
 ###########################################################
 # CUSTOM SCRIPTS
