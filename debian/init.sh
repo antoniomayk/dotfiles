@@ -79,6 +79,7 @@ JAVA='temurin-8-jdk temurin-17-jdk temurin-21-jdk gradle maven'
 JAVASCRIPT='npm'
 PAINT='drawing'
 PYTHON='python3-venv'
+MINT_META='mint-meta-cinnamon mint-meta-codecs mint-meta-core'
 READER='xreader'
 SCM='git git-lfs'
 SHELLS='fish'
@@ -97,7 +98,7 @@ WINDOW_MANAGER='cinnamon'
 
 sudo nala update
 
-sudo nala install $BROWSER $CLI $CONTAINERIZATI $CPP $DOCS $EDITORS $FONTS $GREETER $ICONS $IMAGE $JAVA $JAVASCRIPT $PAINT $PYTHON $READER $SCM $SHELLS $TERMINAL $THEMES_CURSOR $THEMES_GTK $TUI $VIDEO $WALLPAPERS $WINDOW_MANAGER $VBOX
+sudo nala install $BROWSER $CLI $CONTAINERIZATI $CPP $DOCS $EDITORS $FONTS $GREETER $ICONS $IMAGE $JAVA $JAVASCRIPT $PAINT $PYTHON $MINT_META $READER $SCM $SHELLS $TERMINAL $THEMES_CURSOR $THEMES_GTK $TUI $VIDEO $WALLPAPERS $WINDOW_MANAGER $VBOX
 
 sudo nala remove zutty
 
