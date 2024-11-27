@@ -21,6 +21,14 @@ sudo apt install curl gnupg nala
 
 echo -e "$(
 	cat <<-EOF
+		Package: *
+		Pin: release o=linuxmint,c=upstream
+		Pin-Priority: 700
+	EOF
+)" | sudo tee /etc/apt/preferences.d/official-package-repositories.pref
+
+echo -e "$(
+	cat <<-EOF
 		deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware\n
 		deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware\n
 
@@ -32,6 +40,12 @@ echo -e "$(
 
 		deb http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware\n
 		deb-src http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware\n
+	EOF
+)" | sudo tee /etc/apt/sources.list.d/official-package-repositories.list
+
+echo -e "$(
+	cat <<-EOF
+		#/etc/apt/sources.list
 	EOF
 )" | sudo tee /etc/apt/sources.list
 
