@@ -61,8 +61,6 @@ curl -fsSL 'https://download.opensuse.org/repositories/home:justkidding/Debian_1
 echo 'deb https://download.vscodium.com/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
 curl -fsSL 'https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vscodium-archive-keyring.gpg >/dev/null
 
-sudo apt update
-
 ###########################################################
 # PKGs
 ###########################################################
@@ -96,9 +94,13 @@ WINDOW_MANAGER='cinnamon'
 # APT
 ###########################################################
 
+sudo nala update
+
 sudo nala install $BROWSER $CLI $CONTAINERIZATI $CPP $DOCS $EDITORS $FONTS $GREETER $ICONS $IMAGE $JAVA $JAVASCRIPT $PAINT $PYTHON $READER $SCM $SHELLS $TERMINAL $THEMES_CURSOR $THEMES_GTK $TUI $VIDEO $WALLPAPERS $WINDOW_MANAGER
 
 sudo nala remove zutty
+
+sudo nala upgrade
 
 ###########################################################
 # CUSTOM SCRIPTS
