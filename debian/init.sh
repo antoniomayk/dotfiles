@@ -78,9 +78,9 @@ sudo nala upgrade
 ###########################################################
 
 if [[ $(sudo imvirt) == 'Physical' ]]; then
-	sudo nala install 'virtualbox'
+	sudo nala install virtualbox
 else
-	sudo nala install 'virtualbox-guest-x11 virtualbox-guest-utils'
+	sudo nala install virtualbox-guest-x11 virtualbox-guest-utils
 fi
 
 ###########################################################
