@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+DEBIAN_FRONTEND=noninteractive
+
 ###########################################################
 # NETWORK
 ###########################################################
@@ -11,15 +13,15 @@ echo -e "$(
 
 		source /etc/network/interfaces.d/*
 	EOF
-)" | sudo tee /etc/network/interfaces
+)" | sudo tee /etc/network/interfaces &>/dev/null
 
 ###########################################################
 # REPOSITORIES
 ###########################################################
 
-sudo apt install nala
+sudo apt install -y nala
 
-sudo nala install fasttrack-archive-keyring
+sudo nala install -y fasttrack-archive-keyring
 
 echo -e "$(
 	cat <<-EOF
@@ -38,7 +40,7 @@ echo -e "$(
 		deb https://fasttrack.debian.net/debian-fasttrack/ bookworm-fasttrack main contrib
 		deb https://fasttrack.debian.net/debian-fasttrack/ bookworm-backports-staging main contrib
 	EOF
-)" | sudo tee /etc/apt/sources.list
+)" | sudo tee /etc/apt/sources.list &>/dev/null
 
 sudo nala update
 
@@ -67,20 +69,20 @@ TERMINALS='alacritty'
 # APT
 ###########################################################
 
-sudo nala install $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $BROWSERS $OFFICE $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $MULTIMIDIA $TERMINALS
+sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $BROWSERS $OFFICE $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $MULTIMIDIA $TERMINALS
 
-sudo nala remove zutty gnome-terminal
+sudo nala remove -y zutty gnome-terminal
 
-sudo nala upgrade
+sudo nala upgrade -y
 
 ###########################################################
 # VIRTUALIZATION
 ###########################################################
 
 if [[ $(sudo imvirt) == 'Physical' ]]; then
-	sudo nala install virtualbox
+	sudo nala install -y virtualbox
 else
-	sudo nala install virtualbox-guest-x11 virtualbox-guest-utils
+	sudo nala install -y virtualbox-guest-x11 virtualbox-guest-utils
 fi
 
 ###########################################################
@@ -89,43 +91,58 @@ fi
 
 CWD=$(pwd)
 
-cd $(mktemp -d) &&
-	git clone --depth 1 --branch v0.10.2 https://github.com/neovim/neovim . &&
-	make CMAKE_BUILD_TYPE=RelWithDebInfo &&
-	cd build &&
-	cpack -G DEB &&
-	sudo dpkg -i nvim-linux64.deb
+if [[ $(nvim --version | head -n 1 | awk '{print $2}') != "v0.10.2" ]]; then
+	cd $(mktemp -d) &&
+		git clone --depth 1 --branch v0.10.2 https://github.com/neovim/neovim . &&
+		make CMAKE_BUILD_TYPE=RelWithDebInfo &&
+		cd build &&
+		cpack -G DEB &&
+		sudo dpkg -i nvim-linux64.deb
+fi
 
-DISCORD=$(mktemp)
+if ! [[ $(which discord) ]]; then
+	DISCORD=$(mktemp)
 
-curl -Lo $DISCORD "https://discord.com/api/download?platform=linux&format=deb" &&
-	sudo dpkg -i $DISCORD
+	curl -Lo $DISCORD "https://discord.com/api/download?platform=linux&format=deb" &&
+		sudo dpkg -i $DISCORD
+fi
 
-JETBRAINS_MONO=$(mktemp)
+if ! [[ $(fc-list | grep 'JetBrainsMonoNL') ]]; then
+	JETBRAINS_MONO=$(mktemp)
 
-curl -Lo $JETBRAINS_MONO "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" &&
-	mkdir -p ~/.local/share/fonts &&
-	unzip $JETBRAINS_MONO -d ~/.local/share/fonts &&
-	fc-cache -fv
+	curl -Lo $JETBRAINS_MONO "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" &&
+		mkdir -p ~/.local/share/fonts &&
+		unzip $JETBRAINS_MONO -d ~/.local/share/fonts &&
+		fc-cache -fv
+fi
 
-MINT_L_ICONS=$(mktemp)
-MINT_L_THEME=$(mktemp)
+if ! [[ $(dpkg-query -W mint-l-icons) ]]; then
+	MINT_L_ICONS=$(mktemp)
 
-MINT_CURSOR_THEME=$(mktemp)
+	curl -Lo $MINT_L_ICONS "http://packages.linuxmint.com/pool/main/m/mint-l-icons/mint-l-icons_1.7.2_all.deb" &&
+		sudo dpkg -i $MINT_L_ICONS
+fi
 
-MINT_BACKGROUNDS_WILMA=$(mktemp)
+if ! [[ $(dpkg-query -W mint-l-theme) ]]; then
+	MINT_L_THEME=$(mktemp)
 
-curl -Lo $MINT_L_ICONS "http://packages.linuxmint.com/pool/main/m/mint-l-icons/mint-l-icons_1.7.2_all.deb" &&
-	sudo dpkg -i $MINT_L_ICONS
+	curl -Lo $MINT_L_THEME "http://packages.linuxmint.com/pool/main/m/mint-l-theme/mint-l-theme_1.9.8_all.deb" &&
+		sudo dpkg -i $MINT_L_THEME
+fi
 
-curl -Lo $MINT_L_THEME "http://packages.linuxmint.com/pool/main/m/mint-l-theme/mint-l-theme_1.9.8_all.deb" &&
-	sudo dpkg -i $MINT_L_THEME
+if ! [[ $(dpkg-query -W mint-cursor-themes) ]]; then
+	MINT_CURSOR_THEME=$(mktemp)
 
-curl -Lo $MINT_CURSOR_THEME "http://packages.linuxmint.com/pool/main/m/mint-cursor-themes/mint-cursor-themes_1.0.2_all.deb" &&
-	sudo dpkg -i $MINT_CURSOR_THEME
+	curl -Lo $MINT_CURSOR_THEME "http://packages.linuxmint.com/pool/main/m/mint-cursor-themes/mint-cursor-themes_1.0.2_all.deb" &&
+		sudo dpkg -i $MINT_CURSOR_THEME
+fi
 
-curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
-	sudo dpkg -i $MINT_BACKGROUNDS_WILMA
+if ! [[ $(dpkg-query -W mint-backgrounds-wilma) ]]; then
+	MINT_BACKGROUNDS_WILMA=$(mktemp)
+
+	curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
+		sudo dpkg -i $MINT_BACKGROUNDS_WILMA
+fi
 
 cd $CWD
 
@@ -181,7 +198,7 @@ echo -e "$(
 		icon-theme-name = Papirus-Dark\n
 		font-name = JetBrains Mono Medium 10
 	EOF
-)" | sudo tee /etc/lightdm/lightdm-gtk-greeter.conf
+)" | sudo tee /etc/lightdm/lightdm-gtk-greeter.conf &>/dev/null
 
 ###########################################################
 # ALIASES
@@ -198,7 +215,7 @@ echo "$(
 		alias -s rf  "rm -rf"
 		alias -s c   "clear && rm $HOME/.bash_history && builtin history clear && history -c && printf '\033[2J\033[3J\033[1;1H'"
 	EOF
-)" | fish -c "source -"
+)" | fish -c "source -" &>/dev/null
 
 ###########################################################
 # COLORS
@@ -233,7 +250,7 @@ echo "$(
 		set -U fish_pager_color_prefix white --bold --underline
 		set -U fish_pager_color_progress brwhite --background=cyan
 	EOF
-)" | fish -c "source -"
+)" | fish -c "source -" &>/dev/null
 
 #------------------------------------------------------------
 # CREATE CONFIG FOLDERS
