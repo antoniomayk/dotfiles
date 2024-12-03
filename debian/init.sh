@@ -87,46 +87,47 @@ fi
 # CUSTOM PACKAGES
 ###########################################################
 
-# CWD=$(pwd)
-#
-# cd $(mktemp -d) &&
-# 	git clone --depth 1 --branch v0.10.2 https://github.com/neovim/neovim . &&
-# 	make CMAKE_BUILD_TYPE=RelWithDebInfo &&
-# 	cd build &&
-# 	cpack -G DEB &&
-# 	sudo dpkg -i nvim-linux64.deb
-#
-# DISCORD=$(mktemp)
-#
-# curl -Lo $DISCORD "https://discord.com/api/download?platform=linux&format=deb" &&
-# 	sudo dpkg -i $DISCORD
-#
-# JETBRAINS_MONO=$(mktemp)
-#
-# curl -Lo $JETBRAINS_MONO "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" &&
-# 	unzip $JETBRAINS_MONO -d ~/.local/share/fonts &&
-# 	fc-cache -fv
-#
-# MINT_L_ICONS=$(mktemp)
-# MINT_L_THEME=$(mktemp)
-#
-# MINT_CURSOR_THEME=$(mktemp)
-#
-# MINT_BACKGROUNDS_WILMA=$(mktemp)
-#
-# curl -Lo $MINT_L_ICONS "http://packages.linuxmint.com/pool/main/m/mint-l-icons/mint-l-icons_1.7.2_all.deb" &&
-# 	sudo dpkg -i $MINT_L_ICONS
-#
-# curl -Lo $MINT_L_THEME "http://packages.linuxmint.com/pool/main/m/mint-l-theme/mint-l-theme_1.9.8_all.deb" &&
-# 	sudo dpkg -i $MINT_L_THEME
-#
-# curl -Lo $MINT_CURSOR_THEME "http://packages.linuxmint.com/pool/main/m/mint-cursor-themes/mint-cursor-themes_1.0.2_all.deb" &&
-# 	sudo dpkg -i $MINT_CURSOR_THEME
-#
-# curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
-# 	sudo dpkg -i $MINT_BACKGROUNDS_WILMA
-#
-# cd $CWD
+CWD=$(pwd)
+
+cd $(mktemp -d) &&
+	git clone --depth 1 --branch v0.10.2 https://github.com/neovim/neovim . &&
+	make CMAKE_BUILD_TYPE=RelWithDebInfo &&
+	cd build &&
+	cpack -G DEB &&
+	sudo dpkg -i nvim-linux64.deb
+
+DISCORD=$(mktemp)
+
+curl -Lo $DISCORD "https://discord.com/api/download?platform=linux&format=deb" &&
+	sudo dpkg -i $DISCORD
+
+JETBRAINS_MONO=$(mktemp)
+
+curl -Lo $JETBRAINS_MONO "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" &&
+	mkdir -p ~/.local/share/fonts &&
+	unzip $JETBRAINS_MONO -d ~/.local/share/fonts &&
+	fc-cache -fv
+
+MINT_L_ICONS=$(mktemp)
+MINT_L_THEME=$(mktemp)
+
+MINT_CURSOR_THEME=$(mktemp)
+
+MINT_BACKGROUNDS_WILMA=$(mktemp)
+
+curl -Lo $MINT_L_ICONS "http://packages.linuxmint.com/pool/main/m/mint-l-icons/mint-l-icons_1.7.2_all.deb" &&
+	sudo dpkg -i $MINT_L_ICONS
+
+curl -Lo $MINT_L_THEME "http://packages.linuxmint.com/pool/main/m/mint-l-theme/mint-l-theme_1.9.8_all.deb" &&
+	sudo dpkg -i $MINT_L_THEME
+
+curl -Lo $MINT_CURSOR_THEME "http://packages.linuxmint.com/pool/main/m/mint-cursor-themes/mint-cursor-themes_1.0.2_all.deb" &&
+	sudo dpkg -i $MINT_CURSOR_THEME
+
+curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
+	sudo dpkg -i $MINT_BACKGROUNDS_WILMA
+
+cd $CWD
 
 ###########################################################
 # CINNAMON
