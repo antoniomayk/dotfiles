@@ -1,17 +1,12 @@
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
-  -- bars-and-lines
-  { import = "astrocommunity.bars-and-lines.smartcolumn-nvim" },
   -- code-runner
   { import = "astrocommunity.code-runner.overseer-nvim" },
-  -- color
-  { import = "astrocommunity.color.nvim-highlight-colors" },
   -- editing-support
   { import = "astrocommunity.editing-support.conform-nvim" },
   { import = "astrocommunity.editing-support.suda-vim" },
   { import = "astrocommunity.editing-support.vim-visual-multi" },
-  { import = "astrocommunity.editing-support.zen-mode-nvim" },
   -- colorscheme
   { import = "astrocommunity.colorscheme.aurora" },
   { import = "astrocommunity.colorscheme.bamboo-nvim" },
@@ -60,10 +55,6 @@ return {
   { import = "astrocommunity.colorscheme.vim-moonfly-colors" },
   { import = "astrocommunity.colorscheme.vim-nightfly-colors" },
   { import = "astrocommunity.colorscheme.vscode-nvim" },
-  -- completion
-  { import = "astrocommunity.completion.cmp-spell" },
-  -- docker
-  { import = "astrocommunity.docker.lazydocker" },
   -- keybindings
   { import = "astrocommunity.keybinding.nvcheatsheet-nvim" },
   -- motion
@@ -71,16 +62,10 @@ return {
   { import = "astrocommunity.motion.nvim-surround" },
   { import = "astrocommunity.motion.nvim-spider" },
   { import = "astrocommunity.motion.mini-bracketed" },
-  { import = "astrocommunity.motion.mini-move" },
   { import = "astrocommunity.motion.nvim-tree-pairs" },
   { import = "astrocommunity.motion.harpoon" },
   -- markdown & latex
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
-  -- recipes
-  { import = "astrocommunity.recipes.disable-tabline" },
-  { import = "astrocommunity.recipes.neovide" },
-  { import = "astrocommunity.recipes.neo-tree-dark" },
-  -- { import = "astrocommunity.recipes.cache-colorscheme" },
   -- syntax
   { import = "astrocommunity.syntax.vim-easy-align" },
   -- search

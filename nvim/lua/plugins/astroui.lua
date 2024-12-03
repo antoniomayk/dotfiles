@@ -3,7 +3,7 @@ return {
   "AstroNvim/astroui",
   ---@type AstroUIOpts
   opts = {
-    colorscheme = "default",
+    colorscheme = "cyberdream",
     highlights = {
       init = {},
     },

@@ -6,8 +6,8 @@
 
 echo -e "$(
 	cat <<-EOF
-		# This file describes the network interfaces available on your system\n
-		# and how to activate them. For more information, see interfaces(5).\n
+		# This file describes the network interfaces available on your system
+		# and how to activate them. For more information, see interfaces(5).
 
 		source /etc/network/interfaces.d/*
 	EOF
@@ -17,118 +17,115 @@ echo -e "$(
 # REPOSITORIES
 ###########################################################
 
-sudo apt install curl gnupg nala
+sudo apt install nala
+
+sudo nala install fasttrack-archive-keyring
 
 echo -e "$(
 	cat <<-EOF
-		Package: *
-		Pin: release o=linuxmint,c=upstream
-		Pin-Priority: 700
-	EOF
-)" | sudo tee /etc/apt/preferences.d/official-package-repositories.pref
+		deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+		deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
 
-echo -e "$(
-	cat <<-EOF
-		deb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware\n
-		deb-src http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware\n
+		deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
+		deb-src http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
 
-		deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware\n
-		deb-src http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware\n
+		deb http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware
+		deb-src http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware
 
-		deb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware\n
-		deb-src http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware\n
+		deb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
+		deb-src http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
 
-		deb http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware\n
-		deb-src http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware\n
-	EOF
-)" | sudo tee /etc/apt/sources.list.d/official-package-repositories.list
-
-echo -e "$(
-	cat <<-EOF
-		#/etc/apt/sources.list
+		deb https://fasttrack.debian.net/debian-fasttrack/ bookworm-fasttrack main contrib
+		deb https://fasttrack.debian.net/debian-fasttrack/ bookworm-backports-staging main contrib
 	EOF
 )" | sudo tee /etc/apt/sources.list
 
-echo 'deb http://packages.linuxmint.com faye main upstream import backport' | sudo tee /etc/apt/sources.list.d/linuxmint.list
-curl -fsSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xA6616109451BBBF2' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/linuxmint.gpg >/dev/null
-
-echo 'deb https://packages.adoptium.net/artifactory/deb bookworm main' | sudo tee /etc/apt/sources.list.d/adoptium.list
-curl -fsSL 'https://packages.adoptium.net/artifactory/api/gpg/key/public' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg >/dev/null
-
-echo 'deb http://download.opensuse.org/repositories/home:/justkidding/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/home:justkidding.list
-curl -fsSL 'https://download.opensuse.org/repositories/home:justkidding/Debian_12/Release.key' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_justkidding.gpg >/dev/null
-
-echo 'deb https://download.vscodium.com/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
-curl -fsSL 'https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vscodium-archive-keyring.gpg >/dev/null
+sudo nala update
 
 ###########################################################
 # PKGs
 ###########################################################
 
-BROWSER='firefox'
-CLI='dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree unrar unzip zip curl wget'
-CONTAINERIZATION='docker docker-compose'
-CPP='build-essential clang cmake ninja-build ccache'
-DOCS='tldr man-db scdoc'
-EDITORS='codium sublime-text'
-FONTS='fonts-beng fonts-beng-extra fonts-cantarell fonts-dejavu-core fonts-deva fonts-deva-extra fonts-droid-fallback fonts-firacode fonts-freefont-ttf fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-indic fonts-jetbrains-mono fonts-kacst fonts-kacst-one fonts-kalapi fonts-knda fonts-lao fonts-liberation fonts-liberation2 fonts-lklug-sinhala fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-mathjax fonts-mlym fonts-nakula fonts-navilu fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-color-emoji fonts-noto-extra fonts-noto-mono fonts-noto-ui-core fonts-noto-ui-extra fonts-opensymbol fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-sarai fonts-sil-abyssinica fonts-sil-annapurna fonts-sil-padauk fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-taml fonts-telu fonts-telu-extra fonts-teluguvijayam fonts-thai-tlwg fonts-tibetan-machine fonts-tlwg-garuda fonts-tlwg-garuda-ttf fonts-tlwg-kinnari fonts-tlwg-kinnari-ttf fonts-tlwg-laksaman fonts-tlwg-laksaman-ttf fonts-tlwg-loma fonts-tlwg-loma-ttf fonts-tlwg-mono fonts-tlwg-mono-ttf fonts-tlwg-norasi fonts-tlwg-norasi-ttf fonts-tlwg-purisa fonts-tlwg-purisa-ttf fonts-tlwg-sawasdee fonts-tlwg-sawasdee-ttf fonts-tlwg-typewriter fonts-tlwg-typewriter-ttf fonts-tlwg-typist fonts-tlwg-typist-ttf fonts-tlwg-typo fonts-tlwg-typo-ttf fonts-tlwg-umpush fonts-tlwg-umpush-ttf fonts-tlwg-waree fonts-tlwg-waree-ttf fonts-ubuntu fonts-urw-base35 fonts-yrsa-rasa'
-GREETER='lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
-ICONS='papirus-icon-theme mint-l-icons'
-IMAGE='xviewer'
-JAVA='temurin-8-jdk temurin-17-jdk temurin-21-jdk gradle maven'
-JAVASCRIPT='npm'
-PAINT='drawing'
-PYTHON='python3-venv'
-MINT_META='mint-meta-cinnamon mint-meta-codecs mint-meta-core'
-READER='xreader'
-SCM='git git-lfs'
-SHELLS='fish'
-TERMINAL="alacritty ueberzugpp tmux tmux-plugin-manager"
-THEMES_CURSOR='mint-cursor-themes'
-THEMES_GTK='mint-l-theme'
-TUI='ranger'
-VIDEO='xplayer'
-VBOX='virtualbox-guest-additions-iso'
-WALLPAPERS='mint-backgrounds-vanessa mint-backgrounds-vera mint-backgrounds-victoria mint-backgrounds-wilma'
-WINDOW_MANAGER='cinnamon'
+PROGRAMMING_LANGUAGES_AND_TOOLS='openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose'
+VESION_CONTROL='git git-lfs'
+TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree  curl wget tldr man-db scdoc ripgrep imvirt'
+INDIC_FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam'
+OTHER_REGIONAL_FONTS='fonts-kalapi fonts-lao fonts-lklug-sinhala fonts-tibetan-machine fonts-thai-tlwg'
+GENERAL_FONTS='fonts-cantarell fonts-dejavu-core fonts-droid-fallback fonts-firacode fonts-freefont-ttf fonts-indic fonts-jetbrains-mono fonts-kacst fonts-kacst-one fonts-liberation fonts-liberation2 fonts-mathjax fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-color-emoji fonts-noto-extra fonts-noto-mono fonts-noto-ui-core fonts-noto-ui-extra fonts-opensymbol fonts-sil-abyssinica fonts-sil-annapurna fonts-sil-padauk fonts-ubuntu fonts-urw-base35 fonts-yrsa-rasa'
+THAI_FONTS='fonts-tlwg-garuda fonts-tlwg-garuda-ttf fonts-tlwg-kinnari fonts-tlwg-kinnari-ttf fonts-tlwg-laksaman fonts-tlwg-laksaman-ttf fonts-tlwg-loma fonts-tlwg-loma-ttf fonts-tlwg-mono fonts-tlwg-mono-ttf fonts-tlwg-norasi fonts-tlwg-norasi-ttf fonts-tlwg-purisa fonts-tlwg-purisa-ttf fonts-tlwg-sawasdee fonts-tlwg-sawasdee-ttf fonts-tlwg-typewriter fonts-tlwg-typewriter-ttf fonts-tlwg-typist fonts-tlwg-typist-ttf fonts-tlwg-typo fonts-tlwg-typo-ttf fonts-tlwg-umpush fonts-tlwg-umpush-ttf fonts-tlwg-waree fonts-tlwg-waree-ttf'
+BROWSERS='firefox-esr'
+OFFICE='libreoffice libreoffice-gtk3 evolution'
+UTILITIES='inkscape evince dconf-cli gettext qalculate-gtk gnome-screenshot'
+FILE_MANAGMENT='unrar unzip zip'
+DESKTOP_TOOLS='cinnamon-core lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
+THEMES_AND_ICONS='papirus-icon-theme'
+SECURITY_TOOLS='gnupg'
+MULTIMIDIA='obs-studio'
 
 ###########################################################
 # APT
 ###########################################################
 
-sudo nala update
+sudo nala install $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $BROWSERS $OFFICE $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $MULTIMIDIA
 
-sudo nala install $BROWSER $CLI $CONTAINERIZATI $CPP $DOCS $EDITORS $FONTS $GREETER $ICONS $IMAGE $JAVA $JAVASCRIPT $PAINT $PYTHON $MINT_META $READER $SCM $SHELLS $TERMINAL $THEMES_CURSOR $THEMES_GTK $TUI $VIDEO $WALLPAPERS $WINDOW_MANAGER $VBOX
-
-sudo nala remove zutty
+sudo nala remove zutty gnome-terminal
 
 sudo nala upgrade
 
 ###########################################################
-# VIRTUAL BOX GUEST
+# VIRTUALIZATION
 ###########################################################
 
-sudo nala install dkms linux-headers-$(uname -r) &&
-	sudo mkdir -p /mnt/vboxiso &&
-	sudo mount -o loop /usr/share/virtualbox/VBoxGuestAdditions.iso /mnt/vboxiso &&
-	sudo sh /mnt/vboxiso/VBoxLinuxAdditions.run &&
-	sudo unmount /mnt/vboxiso &&
-	sudo rmdir /mnt/vboxiso
+if [[ $(sudo imvirt) == 'Physical' ]]; then
+	sudo nala install 'virtualbox'
+else
+	sudo nala install 'virtualbox-guest-x11 virtualbox-guest-utils'
+fi
 
 ###########################################################
-# CUSTOM SCRIPTS
+# CUSTOM PACKAGES
 ###########################################################
 
 CWD=$(pwd)
 
-bash $CWD/bottom.sh
-bash $CWD/jetbrains_mono.sh
-bash $CWD/lazydocker.sh
-bash $CWD/lazygit.sh
-bash $CWD/neovim.sh
-bash $CWD/ripgrep.sh
+cd $(mktemp -d) &&
+	git clone --depth 1 --branch v0.10.2 https://github.com/neovim/neovim . &&
+	make CMAKE_BUILD_TYPE=RelWithDebInfo &&
+	cd build &&
+	cpack -G DEB &&
+	sudo dpkg -i nvim-linux64.deb
 
-cd $(pwd)
+DISCORD=$(mktemp)
+
+curl -Lo $DISCORD "https://discord.com/api/download?platform=linux&format=deb" &&
+	sudo dpkg -i $DISCORD
+
+JETBRAINS_MONO=$(mktemp)
+
+curl -Lo $JETBRAINS_MONO "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" &&
+	unzip $JETBRAINS_MONO -d ~/.local/share/fonts &&
+	fc-cache -fv
+
+MINT_L_ICONS=$(mktemp)
+MINT_L_THEME=$(mktemp)
+
+MINT_CURSOR_THEME=$(mktemp)
+
+MINT_BACKGROUNDS_WILMA=$(mktemp)
+
+curl -Lo $MINT_L_ICONS "http://packages.linuxmint.com/pool/main/m/mint-l-icons/mint-l-icons_1.7.2_all.deb" &&
+	sudo dpkg -i $MINT_L_ICONS
+
+curl -Lo $MINT_L_THEME "http://packages.linuxmint.com/pool/main/m/mint-l-theme/mint-l-theme_1.9.8_all.deb" &&
+	sudo dpkg -i $MINT_L_THEME
+
+curl -Lo $MINT_CURSOR_THEME "http://packages.linuxmint.com/pool/main/m/mint-cursor-themes/mint-cursor-themes_1.0.2_all.deb" &&
+	sudo dpkg -i $MINT_CURSOR_THEME
+
+curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
+	sudo dpkg -i $MINT_BACKGROUNDS_WILMA
+
+cd $CWD
 
 ###########################################################
 # CINNAMON
@@ -140,27 +137,32 @@ dconf write /org/cinnamon/theme/name "'Mint-L-Dark-Grey'"
 dconf write /org/cinnamon/desktop/interface/gtk-theme "'Mint-L-Dark-Grey'"
 dconf write /org/cinnamon/desktop/interface/icon-theme "'Papirus-Dark'"
 dconf write /org/cinnamon/desktop/interface/cursor-theme "'Bibata-Modern-Classic'"
-dconf write /org/cinnamon/desktop/interface/font-name "'JetBrainsMono Nerd Font Medium 10'"
-dconf write /org/cinnamon/desktop/wm/preferences/titlebar-font "'JetBrainsMono Nerd Font Medium 10'"
+dconf write /org/cinnamon/desktop/interface/font-name "'JetBrains Mono Medium 10'"
+dconf write /org/cinnamon/desktop/wm/preferences/titlebar-font "'JetBrains Mono Medium 10'"
 dconf write /org/cinnamon/desktop/wm/preferences/theme "'Mint-L-Dark-Grey'"
 
 dconf write /x/dm/slick-greeter/cursor-theme-name "'Bibata-Modern-Classic'"
 dconf write /x/dm/slick-greeter/icon-theme-name "'Mint-L-Dark-Grey'"
 dconf write /x/dm/slick-greeter/theme-name "'Mint-L-Dark-Grey'"
-dconf write /x/dm/slick-greeter/font-name "'JetBrainsMono Nerd Font Medium 10'"
+dconf write /x/dm/slick-greeter/font-name "'JetBrains Mono Medium 10'"
 
-dconf write /org/gnome/desktop/interface/font-name "'JetBrainsMono Nerd Font Medium 10'"
-dconf write /org/gnome/desktop/interface/document-font-name "'JetBrainsMono Nerd Font Medium 10'"
-dconf write /org/gnome/desktop/interface/monospace-font-name "'JetBrainsMono Nerd Font Medium 10'"
+dconf write /org/gnome/desktop/interface/font-name "'JetBrains Mono Medium 10'"
+dconf write /org/gnome/desktop/interface/document-font-name "'JetBrains Mono Medium 10'"
+dconf write /org/gnome/desktop/interface/monospace-font-name "'JetBrains Mono Medium 10'"
 
-dconf write /org/nemo/desktop/font "'JetBrainsMono Nerd Font Medium 10'"
+dconf write /org/nemo/desktop/font "'JetBrains Mono Medium 10'"
 
 dconf write /org/x/apps/portal/color-scheme "'prefer-dark'"
+
+dconf write /org/cinnamon/desktop/wm/preferences/button-layout ':minimize,maximize,close'
 
 dconf write /org/cinnamon/hotcorner-layout "['expo:true:0', 'scale:true:0', 'scale:false:0', 'desktop:true:0']"
 
 dconf write /org/cinnamon/desktop/background/picture-uri "'file:///usr/share/backgrounds/linuxmint-wilma/meiying_body_of_water.jpg'"
-dconf write /org/cinnamon/enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:3:grouped-window-list@cinnamon.org:2', 'panel1:right:1:systray@cinnamon.org:3', 'panel1:right:2:xapp-status@cinnamon.org:4', 'panel1:right:3:notifications@cinnamon.org:5', 'panel1:right:4:printers@cinnamon.org:6', 'panel1:right:6:keyboard@cinnamon.org:8', 'panel1:right:7:favorites@cinnamon.org:9', 'panel1:right:8:network@cinnamon.org:10', 'panel1:right:9:sound@cinnamon.org:11', 'panel1:right:10:power@cinnamon.org:12', 'panel1:right:11:calendar@cinnamon.org:13', 'panel1:right:12:cornerbar@cinnamon.org:14', 'panel1:left:2:workspace-switcher@cinnamon.org:15']"
+dconf write /org/cinnamon/enabled-applets "['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:4:grouped-window-list@cinnamon.org:2', 'panel1:right:4:systray@cinnamon.org:3', 'panel1:right:5:xapp-status@cinnamon.org:4', 'panel1:right:7:notifications@cinnamon.org:5', 'panel1:right:8:printers@cinnamon.org:6', 'panel1:right:9:keyboard@cinnamon.org:8', 'panel1:right:10:favorites@cinnamon.org:9', 'panel1:right:11:network@cinnamon.org:10', 'panel1:right:12:sound@cinnamon.org:11', 'panel1:right:13:power@cinnamon.org:12', 'panel1:right:15:calendar@cinnamon.org:13', 'panel1:right:16:cornerbar@cinnamon.org:14', 'panel1:left:2:workspace-switcher@cinnamon.org:15', 'panel1:right:6:separator@cinnamon.org:15', 'panel1:right:3:separator@cinnamon.org:16', 'panel1:right:14:separator@cinnamon.org:17', 'panel1:left:3:separator@cinnamon.org:18']"
+
+dconf write /org/cinnamon/desktop/applications/terminal/exec "'alacritty'"
+dconf write /org/cinnamon/desktop/applications/terminal/exec-arg "'--working-directory'"
 
 cinnamon --replace >/dev/null 2>&1 &
 disown
@@ -174,8 +176,8 @@ echo -e "$(
 		[greeter]\n
 		background = /usr/share/backgrounds/linuxmint-wilma/meiying_body_of_water.jpg\n
 		theme-name = Mint-L-Dark-Grey\n
-		icon-theme-name = Papirus-Light\n
-		font-name = JetBrainsMono Nerd Font Medium 10
+		icon-theme-name = Papirus-Dark\n
+		font-name = JetBrains Mono Medium 10
 	EOF
 )" | sudo tee /etc/lightdm/lightdm-gtk-greeter.conf
 
@@ -186,13 +188,13 @@ echo -e "$(
 echo "$(
 	cat <<-EOF
 		alias -s b   "bat"
-		alias -s l   "eza"
+		alias -s l   "exa"
 		alias -s la  "exa -a"
 		alias -s ll  "exa -l"
 		alias -s lla "exa -la"
 		alias -s r   "rm -r"
 		alias -s rf  "rm -rf"
-		alias -s clear   "clear && rm $HOME/.bash_history && builtin history clear && history -c && printf '\033[2J\033[3J\033[1;1H'"
+		alias -s c   "clear && rm $HOME/.bash_history && builtin history clear && history -c && printf '\033[2J\033[3J\033[1;1H'"
 	EOF
 )" | fish -c "source -"
 

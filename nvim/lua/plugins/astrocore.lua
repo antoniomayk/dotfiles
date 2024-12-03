@@ -20,16 +20,13 @@ return {
         foldcolumn = "0",
       },
       opt = {
-        termguicolors = false,
         relativenumber = true,
         number = true,
-        spell = false,
         signcolumn = "no",
         wrap = false,
-        guifont = "JetBrainsMono NF:h11:#e-subpixelantialias:#h-normal",
         linespace = 0,
         shell = "fish",
-        laststatus = 0,
+        laststatus = 3,
         colorcolumn = { 80, 120 },
         fillchars = {
           horiz = "━",
@@ -40,8 +37,8 @@ return {
           vertright = "┣",
           verthoriz = "╋",
           eob = " ",
-          foldopen = "",
-          foldclose = "",
+          foldopen = "+",
+          foldclose = "-",
         },
         list = false,
         listchars = {
@@ -52,22 +49,6 @@ return {
           trail = "~",
           space = "•",
         },
-      },
-      g = {
-        neovide_floating_shadow = false,
-        neovide_scale_factor = 1.0,
-        neovide_padding_top = 0,
-        neovide_padding_bottom = 0,
-        neovide_padding_right = 0,
-        neovide_padding_left = 0,
-        neovide_transparency = vim.g.gui_transparency_default,
-        neovide_cursor_vfx_mode = "pixiedust",
-        neovide_cursor_vfx_opacity = 500.0,
-        neovide_cursor_vfx_particle_lifetime = 4.0,
-        neovide_cursor_vfx_particle_density = 32.0,
-        neovide_cursor_vfx_particle_speed = 16.0,
-        neovide_cursor_animation_length = 0.08,
-        moonflyWinSeparator = 2,
       },
     },
     mappings = {
@@ -86,7 +67,7 @@ return {
           function()
             require("harpoon").ui:toggle_quick_menu(
               require("harpoon"):list(),
-              { title = " Quick Search ", title_pos = "center", border = "rounded" }
+              { title = " Harpoon ", title_pos = "center", border = "rounded" }
             )
           end,
           desc = "Toggle quick menu",

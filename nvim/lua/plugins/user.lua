@@ -1,18 +1,6 @@
 ---@type LazySpec
 return {
   {
-    "folke/zen-mode.nvim",
-    cmd = "ZenMode",
-    opts = {
-      window = {
-        backdrop = 1,
-        width = function() return math.max(120, vim.o.columns * 0.75) end,
-        height = 1,
-      },
-    },
-  },
-
-  {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     opts = {

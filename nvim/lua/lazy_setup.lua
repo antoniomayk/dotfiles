@@ -6,7 +6,7 @@ require("lazy").setup({
     opts = {
       mapleader = " ",
       maplocalleader = ",",
-      icons_enabled = false,
+      icons_enabled = true,
       pin_plugins = nil,
       update_notifications = true,
     },
@@ -14,7 +14,7 @@ require("lazy").setup({
   { import = "community" },
   { import = "plugins" },
 } --[[@as LazySpec]], {
-  install = { colorscheme = { "default" } },
+  install = { colorscheme = { "cyberdream" } },
   ui = { backdrop = 100 },
   performance = {
     rtp = {
