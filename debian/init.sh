@@ -50,26 +50,24 @@ sudo nala update
 
 PROGRAMMING_LANGUAGES_AND_TOOLS='openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose'
 VESION_CONTROL='git git-lfs'
-TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree  curl wget tldr man-db scdoc ripgrep imvirt'
+TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep imvirt'
 INDIC_FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam'
 OTHER_REGIONAL_FONTS='fonts-kalapi fonts-lao fonts-lklug-sinhala fonts-tibetan-machine fonts-thai-tlwg'
 GENERAL_FONTS='fonts-cantarell fonts-dejavu-core fonts-droid-fallback fonts-firacode fonts-freefont-ttf fonts-indic fonts-jetbrains-mono fonts-kacst fonts-kacst-one fonts-liberation fonts-liberation2 fonts-mathjax fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-color-emoji fonts-noto-extra fonts-noto-mono fonts-noto-ui-core fonts-noto-ui-extra fonts-opensymbol fonts-sil-abyssinica fonts-sil-annapurna fonts-sil-padauk fonts-ubuntu fonts-urw-base35 fonts-yrsa-rasa'
 THAI_FONTS='fonts-tlwg-garuda fonts-tlwg-garuda-ttf fonts-tlwg-kinnari fonts-tlwg-kinnari-ttf fonts-tlwg-laksaman fonts-tlwg-laksaman-ttf fonts-tlwg-loma fonts-tlwg-loma-ttf fonts-tlwg-mono fonts-tlwg-mono-ttf fonts-tlwg-norasi fonts-tlwg-norasi-ttf fonts-tlwg-purisa fonts-tlwg-purisa-ttf fonts-tlwg-sawasdee fonts-tlwg-sawasdee-ttf fonts-tlwg-typewriter fonts-tlwg-typewriter-ttf fonts-tlwg-typist fonts-tlwg-typist-ttf fonts-tlwg-typo fonts-tlwg-typo-ttf fonts-tlwg-umpush fonts-tlwg-umpush-ttf fonts-tlwg-waree fonts-tlwg-waree-ttf'
-BROWSERS='firefox-esr'
-OFFICE='libreoffice libreoffice-gtk3 evolution'
-UTILITIES='inkscape evince dconf-cli gettext qalculate-gtk gnome-screenshot'
+UTILITIES='dconf-cli gettext gnome-screenshot'
 FILE_MANAGMENT='unrar unzip zip'
 DESKTOP_TOOLS='cinnamon-core lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
 THEMES_AND_ICONS='papirus-icon-theme'
 SECURITY_TOOLS='gnupg'
-MULTIMIDIA='obs-studio'
 TERMINALS='alacritty'
+PACKAGE_MANAGEMENT='flatpak'
 
 ###########################################################
 # APT
 ###########################################################
 
-sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $BROWSERS $OFFICE $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $MULTIMIDIA $TERMINALS
+sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $TERMINALS
 
 sudo nala remove -y zutty gnome-terminal
 
@@ -98,13 +96,6 @@ if [[ $(nvim --version | head -n 1 | awk '{print $2}') != "v0.10.2" ]]; then
 		cd build &&
 		cpack -G DEB &&
 		sudo dpkg -i nvim-linux64.deb
-fi
-
-if ! [[ $(which discord) ]]; then
-	DISCORD=$(mktemp)
-
-	curl -Lo $DISCORD "https://discord.com/api/download?platform=linux&format=deb" &&
-		sudo dpkg -i $DISCORD
 fi
 
 if ! [[ $(fc-list | grep 'JetBrainsMonoNL') ]]; then
@@ -185,6 +176,28 @@ dconf write /org/cinnamon/desktop/applications/terminal/exec-arg "'--working-dir
 
 cinnamon --replace >/dev/null 2>&1 &
 disown
+
+###########################################################
+# FLATPAK
+###########################################################
+
+NETWORKING='org.mozilla.firefox com.google.Chrome com.discordapp.Discord'
+AUDIO_AND_VIDEO='org.videolan.VLC org.gnome.Rhythmbox3 com.obsproject.Studio'
+PRODUCTIVITY='md.obsidian.Obsidian org.libreoffice.LibreOffice'
+GRAPHICS_AND_PHOTOGRAPHY='org.inkscape.Inkscape org.kde.krita org.gnome.Evince'
+SCIENCE='io.github.Qalculate'
+
+cp -r /usr/share/themes/* $HOME/.themes/
+cp -r /usr/share/icons/* $HOME/.icons/
+
+flatpak override --user --filesystem=xdg-config/gtk-3.0:ro
+sudo flatpak override --filesystem=$HOME/.themes
+sudo flatpak override --filesystem=$HOME/.icons
+
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+flatpak install -y --noninteractive runtime/org.gnome.Platform/x86_64/3.24
+flatpak install -y --noninteractive flathub $NETWORKING $AUDIO_AND_VIDEO $PRODUCTIVITY $GRAPHICS_AND_PHOTOGRAPHY $SCIENCE
 
 ###########################################################
 # LIGHTDM
