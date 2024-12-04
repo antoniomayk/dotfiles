@@ -19,7 +19,7 @@ echo -e "$(
 # REPOSITORIES
 ###########################################################
 
-sudo apt install -y nala
+sudo apt install -y nala curl gnupg
 
 sudo nala install -y fasttrack-archive-keyring
 
@@ -42,6 +42,9 @@ echo -e "$(
 	EOF
 )" | sudo tee /etc/apt/sources.list &>/dev/null
 
+echo 'deb https://download.vscodium.com/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
+curl -fsSL 'https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vscodium-archive-keyring.gpg >/dev/null
+
 sudo nala update
 
 ###########################################################
@@ -59,15 +62,15 @@ UTILITIES='dconf-cli gettext gnome-screenshot'
 FILE_MANAGMENT='unrar unzip zip'
 DESKTOP_TOOLS='cinnamon-core lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
 THEMES_AND_ICONS='papirus-icon-theme'
-SECURITY_TOOLS='gnupg'
 TERMINALS='alacritty'
 PACKAGE_MANAGEMENT='flatpak'
+CODE_EDITORS='codium'
 
 ###########################################################
 # APT
 ###########################################################
 
-sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $TERMINALS
+sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL $TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS $THAI_FONTS $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS $SECURITY_TOOLS $TERMINALS $CODE_EDITORS
 
 sudo nala remove -y zutty gnome-terminal
 
