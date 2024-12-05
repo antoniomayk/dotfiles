@@ -51,7 +51,7 @@ sudo nala update
 # PKGs
 ###########################################################
 
-PROGRAMMING_LANGUAGES_AND_TOOLS='openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose'
+PROGRAMMING_LANGUAGES_AND_TOOLS='openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose golang'
 VESION_CONTROL='git git-lfs'
 TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep imvirt'
 INDIC_FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam'
@@ -91,6 +91,18 @@ fi
 ###########################################################
 
 CWD=$(pwd)
+
+if ! [[ $(rust --version) ]]; then
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+	cargo install --git https://github.com/neovide/neovide
+	cargo install --git https://github.com/ClementTsang/bottom
+fi
+
+if ! [[ $(go --version) ]]; then
+	go install github.com/jesseduffield/lazydocker@v0.19.0
+	go install github.com/jesseduffield/lazygit@v0.39.4
+fi
 
 if [[ $(nvim --version | head -n 1 | awk '{print $2}') != "v0.10.2" ]]; then
 	cd $(mktemp -d) &&
@@ -203,6 +215,38 @@ flatpak install -y --noninteractive runtime/org.gnome.Platform/x86_64/3.24
 flatpak install -y --noninteractive flathub $NETWORKING $AUDIO_AND_VIDEO $PRODUCTIVITY $GRAPHICS_AND_PHOTOGRAPHY $SCIENCE
 
 ###########################################################
+# PAPIRUS ICON THEME
+###########################################################
+
+# Adds Zen Browser Icons
+
+sudo cp $HOME/Projects/dotfiles/.icons/Papirus/16x16/apps/zen-browser.svg /usr/share/icons/Papirus/16x16/apps/zen-browser.svg
+sudo cp $HOME/Projects/dotfiles/.icons/Papirus/22x22/apps/zen-browser.svg /usr/share/icons/Papirus/22x22/apps/zen-browser.svg
+sudo cp $HOME/Projects/dotfiles/.icons/Papirus/24x24/apps/zen-browser.svg /usr/share/icons/Papirus/24x24/apps/zen-browser.svg
+sudo cp $HOME/Projects/dotfiles/.icons/Papirus/32x32/apps/zen-browser.svg /usr/share/icons/Papirus/32x32/apps/zen-browser.svg
+sudo cp $HOME/Projects/dotfiles/.icons/Papirus/48x48/apps/zen-browser.svg /usr/share/icons/Papirus/48x48/apps/zen-browser.svg
+sudo cp $HOME/Projects/dotfiles/.icons/Papirus/64x64/apps/zen-browser.svg /usr/share/icons/Papirus/64x64/apps/zen-browser.svg
+
+sudo ln -s /usr/share/icons/Papirus/16x16/apps/zen-browser.svg /usr/share/icons/Papirus/16x16/apps/io.github.zen_browser.zen.svg
+sudo ln -s /usr/share/icons/Papirus/22x22/apps/zen-browser.svg /usr/share/icons/Papirus/22x22/apps/io.github.zen_browser.zen.svg
+sudo ln -s /usr/share/icons/Papirus/24x24/apps/zen-browser.svg /usr/share/icons/Papirus/24x24/apps/io.github.zen_browser.zen.svg
+sudo ln -s /usr/share/icons/Papirus/32x32/apps/zen-browser.svg /usr/share/icons/Papirus/32x32/apps/io.github.zen_browser.zen.svg
+sudo ln -s /usr/share/icons/Papirus/48x48/apps/zen-browser.svg /usr/share/icons/Papirus/48x48/apps/io.github.zen_browser.zen.svg
+sudo ln -s /usr/share/icons/Papirus/64x64/apps/zen-browser.svg /usr/share/icons/Papirus/64x64/apps/io.github.zen_browser.zen.svg
+
+# Refresh Icons cache
+
+sudo gtk-update-icon-cache -q /usr/share/icons/Papirus-Dark/
+
+###########################################################
+# PAPIRUS ICON FOLDER
+###########################################################
+
+wget -qO- https://git.io/papirus-folders-install | sh
+
+papirus-folders -C grey
+
+###########################################################
 # LIGHTDM
 ###########################################################
 
@@ -215,6 +259,30 @@ echo -e "$(
 		font-name = JetBrains Mono Medium 10
 	EOF
 )" | sudo tee /etc/lightdm/lightdm-gtk-greeter.conf &>/dev/null
+
+###########################################################
+# USER .DESKTOPS
+###########################################################
+
+mkdir -p $HOME/.local/share/applications
+
+echo -e "$(
+	cat <<-EOF
+		[Desktop Entry]
+		Name=Neovide
+		GenericName=Text Editor
+		Comment=Edit text files
+		TryExec=neovide
+		Exec=neovide %F
+		Terminal=false
+		Type=Application
+		Keywords=Text;editor;
+		Icon=nvim
+		Categories=Utility;TextEditor;
+		StartupNotify=false
+		MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+	EOF
+)" | tee $HOME/.local/share/application/neovide.desktop &>/dev/null
 
 ###########################################################
 # ALIASES
@@ -267,6 +335,34 @@ echo "$(
 		set -U fish_pager_color_progress brwhite --background=cyan
 	EOF
 )" | fish -c "source -" &>/dev/null
+
+#------------------------------------------------------------
+# FISH CONFIG
+#------------------------------------------------------------
+
+echo -e "$(
+	cat <<-EOF
+		if status is-interactive
+		    # Commands to run in interactive sessions can go here
+		end
+
+		zoxide init fish | source
+
+		if not contains "\$HOME/.cargo/bin" \$PATH
+		    set -x PATH "\$HOME/.cargo/bin" \$PATH
+		end
+
+		set -Ux GOPATH \$HOME/.go
+
+		go env -w GOPATH=\$HOME/.go
+
+		if not contains "\$HOME/.go/bin" \$PATH
+		    set -x PATH "\$HOME/.go/bin" \$PATH
+		end
+	EOF
+)" | tee $HOME/.config/fish/config.fish &>/dev/null
+
+sudo sed -i 's/^Name=fish$/Name=Fish/' /usr/share/applications/fish.desktop
 
 #------------------------------------------------------------
 # CREATE CONFIG FOLDERS

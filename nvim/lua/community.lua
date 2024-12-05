@@ -66,6 +66,8 @@ return {
   { import = "astrocommunity.motion.harpoon" },
   -- markdown & latex
   { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
+  -- recipes
+  { import = "astrocommunity.recipes.neovide" },
   -- syntax
   { import = "astrocommunity.syntax.vim-easy-align" },
   -- search
