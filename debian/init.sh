@@ -19,9 +19,7 @@ echo -e "$(
 # REPOSITORIES
 ###########################################################
 
-sudo apt install -y nala curl gnupg
-
-sudo nala install -y fasttrack-archive-keyring
+sudo apt install -y nala curl gnupg fasttrack-archive-keyring
 
 echo -e "$(
 	cat <<-EOF
@@ -51,7 +49,7 @@ sudo nala update
 # PKGs
 ###########################################################
 
-PROGRAMMING_LANGUAGES_AND_TOOLS='openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose golang'
+PROGRAMMING_LANGUAGES_AND_TOOLS='openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose golang cargo rustc'
 VESION_CONTROL='git git-lfs'
 TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep imvirt'
 INDIC_FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam'
@@ -87,30 +85,43 @@ else
 fi
 
 ###########################################################
-# CUSTOM PACKAGES
+# VSCODIUM
 ###########################################################
 
-CWD=$(pwd)
+codium --install-extension ddiu8081.moegi-theme
+codium --install-extension miguelsolorio.fluent-icons
+codium --install-extension PKief.material-icon-theme
 
-if ! [[ $(rust --version) ]]; then
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+###########################################################
+# CUSTOM INSTALLERS
+###########################################################
 
-	cargo install --git https://github.com/neovide/neovide
-	cargo install --git https://github.com/ClementTsang/bottom
+if ! [[ $(papirus-folders --version) ]]; then
+	wget -qO- https://git.io/papirus-folders-install | sh
+
+	papirus-folders -C grey
 fi
 
-if ! [[ $(go --version) ]]; then
-	go install github.com/jesseduffield/lazydocker@v0.19.0
-	go install github.com/jesseduffield/lazygit@v0.39.4
-fi
+if ! [[ $(sdkmanager --version) ]]; then
+	mkdir -p $HOME/Android/Sdk/
 
-if [[ $(nvim --version | head -n 1 | awk '{print $2}') != "v0.10.2" ]]; then
-	cd $(mktemp -d) &&
-		git clone --depth 1 --branch v0.10.2 https://github.com/neovim/neovim . &&
-		make CMAKE_BUILD_TYPE=RelWithDebInfo &&
-		cd build &&
-		cpack -G DEB &&
-		sudo dpkg -i nvim-linux64.deb
+	COMMANDLINETOOLS=$(mktemp)
+	COMMANDLINETOOLS_X=$(mktemp -d)
+
+	curl -Lo $COMMANDLINETOOLS "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip" &&
+		unzip $COMMANDLINETOOLS -d $COMMANDLINETOOLS_X &&
+		yes | $COMMANDLINETOOLS_X/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/Android/Sdk \
+			'cmdline-tools;latest' \
+			'emulator' \
+			'platform-tools' \
+			'system-images;android-35;google_apis;x86_64' \
+			'build-tools;35.0.0' \
+			'platforms;android-35' \
+			'sources;android-35' &&
+		$HOME/Android/Sdk/cmdline-tools/latest/bin/avdmanager create avd \
+			--name pixel_7_a35 \
+			--package 'system-images;android-35;google_apis;x86_64' \
+			--device 31
 fi
 
 if ! [[ $(fc-list | grep 'JetBrainsMonoNL') ]]; then
@@ -121,6 +132,10 @@ if ! [[ $(fc-list | grep 'JetBrainsMonoNL') ]]; then
 		unzip $JETBRAINS_MONO -d ~/.local/share/fonts &&
 		fc-cache -fv
 fi
+
+###########################################################
+# .DEB PACKAGES
+###########################################################
 
 if ! [[ $(dpkg-query -W mint-l-icons) ]]; then
 	MINT_L_ICONS=$(mktemp)
@@ -149,8 +164,6 @@ if ! [[ $(dpkg-query -W mint-backgrounds-wilma) ]]; then
 	curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
 		sudo dpkg -i $MINT_BACKGROUNDS_WILMA
 fi
-
-cd $CWD
 
 ###########################################################
 # CINNAMON
@@ -196,7 +209,7 @@ disown
 # FLATPAK
 ###########################################################
 
-NETWORKING='org.mozilla.firefox com.google.Chrome com.discordapp.Discord'
+NETWORKING='org.mozilla.firefox com.google.Chrome io.github.zen_browser.zen com.discordapp.Discord'
 AUDIO_AND_VIDEO='org.videolan.VLC org.gnome.Rhythmbox3 com.obsproject.Studio'
 PRODUCTIVITY='md.obsidian.Obsidian org.libreoffice.LibreOffice'
 GRAPHICS_AND_PHOTOGRAPHY='org.inkscape.Inkscape org.kde.krita org.gnome.Evince'
@@ -239,14 +252,6 @@ sudo ln -s /usr/share/icons/Papirus/64x64/apps/zen-browser.svg /usr/share/icons/
 sudo gtk-update-icon-cache -q /usr/share/icons/Papirus-Dark/
 
 ###########################################################
-# PAPIRUS ICON FOLDER
-###########################################################
-
-wget -qO- https://git.io/papirus-folders-install | sh
-
-papirus-folders -C grey
-
-###########################################################
 # LIGHTDM
 ###########################################################
 
@@ -259,30 +264,6 @@ echo -e "$(
 		font-name = JetBrains Mono Medium 10
 	EOF
 )" | sudo tee /etc/lightdm/lightdm-gtk-greeter.conf &>/dev/null
-
-###########################################################
-# USER .DESKTOPS
-###########################################################
-
-mkdir -p $HOME/.local/share/applications
-
-echo -e "$(
-	cat <<-EOF
-		[Desktop Entry]
-		Name=Neovide
-		GenericName=Text Editor
-		Comment=Edit text files
-		TryExec=neovide
-		Exec=neovide %F
-		Terminal=false
-		Type=Application
-		Keywords=Text;editor;
-		Icon=nvim
-		Categories=Utility;TextEditor;
-		StartupNotify=false
-		MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-	EOF
-)" | tee $HOME/.local/share/application/neovide.desktop &>/dev/null
 
 ###########################################################
 # ALIASES
@@ -343,21 +324,37 @@ echo "$(
 echo -e "$(
 	cat <<-EOF
 		if status is-interactive
-		    # Commands to run in interactive sessions can go here
+				# Commands to run in interactive sessions can go here
 		end
 
 		zoxide init fish | source
 
-		if not contains "\$HOME/.cargo/bin" \$PATH
-		    set -x PATH "\$HOME/.cargo/bin" \$PATH
+		# Golang
+
+		go env -w GOPATH=$HOME/.go
+
+		if set -q GOPATH
+				set -x GOPATH $HOME/.go
 		end
 
-		set -Ux GOPATH \$HOME/.go
+		if not contains "$HOME/.go/bin" $PATH
+				set -x PATH "$HOME/.go/bin" $PATH
+		end
 
-		go env -w GOPATH=\$HOME/.go
+		# Rust
 
-		if not contains "\$HOME/.go/bin" \$PATH
-		    set -x PATH "\$HOME/.go/bin" \$PATH
+		if not contains "$HOME/.cargo/bin" $PATH
+				set -x PATH "$HOME/.cargo/bin" $PATH
+		end
+
+		# Android
+
+		if not contains "$HOME/Android/Sdk/cmdline-tools/latest/bin" $PATH
+				set -x PATH "$HOME/Android/Sdk/cmdline-tools/latest/bin" $PATH
+		end
+
+		if not contains "$HOME/Android/Sdk/emulator" $PATH
+				set -x PATH "$HOME/Android/Sdk/emulator" $PATH
 		end
 	EOF
 )" | tee $HOME/.config/fish/config.fish &>/dev/null
@@ -368,6 +365,7 @@ sudo sed -i 's/^Name=fish$/Name=Fish/' /usr/share/applications/fish.desktop
 # CREATE CONFIG FOLDERS
 #------------------------------------------------------------
 
+rm -rf "$HOME/.config/VSCodium/User" && ln -s "$HOME/Projects/dotfiles/codium" "$HOME/.config/VSCodium/User"
 rm -rf "$HOME/.config/bat" && ln -s "$HOME/Projects/dotfiles/bat" "$HOME/.config/bat"
 rm -rf "$HOME/.config/alacritty" && ln -s "$HOME/Projects/dotfiles/alacritty" "$HOME/.config/alacritty"
 rm -rf "$HOME/.config/nvim" && ln -s "$HOME/Projects/dotfiles/nvim" "$HOME/.config/nvim"

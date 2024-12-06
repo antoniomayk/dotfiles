@@ -24,7 +24,6 @@ return {
         number = true,
         signcolumn = "no",
         wrap = false,
-        -- guifont = "JetBrainsMono NF:h12:#e-subpixelantialias:#h-normal",
         guifont = "JetBrainsMono NF:h12.5:#e-subpixelantialias:#h-slight",
         linespace = 0,
         shell = "fish",
@@ -93,6 +92,28 @@ return {
         ["<Leader>uz"] = {
           require("toggles").clean_mode,
           desc = "Toggle 'Clean Mode'",
+        },
+
+        ["<Leader>a"] = {
+          desc = "󱋿 Any Jump",
+        },
+        ["<Leader>aj"] = {
+          [[<cmd>AnyJump<cr>]],
+          desc = "Jump to definition under cursor",
+        },
+        ["<Leader>ab"] = {
+          [[<cmd>AnyJumpBack<cr>]],
+          desc = "Open previous opened file (after jump)",
+        },
+        ["<Leader>al"] = {
+          [[<cmd>AnyJumpLastResults<cr>]],
+          desc = "Open last closed search window again",
+        },
+      },
+      x = {
+        ["<Leader>aj"] = {
+          [[<cmd>AnyJumpVisual<cr>]],
+          desc = "Jump to definition under cursor",
         },
       },
     },

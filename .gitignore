@@ -1,6 +1,5 @@
 tmux/plugins
 nvim/lazy-lock.json
-nvim/theme/*
-!nvim/theme/.gitkeep
 /**/__pycache__
-
+codium/*
+!codium/settings.json

@@ -62,7 +62,8 @@ return {
       filesystem = {
         window = {
           mappings = {
-            ["/"] = "telescope_find",
+            ["/"] = "noop",
+            ["'"] = "telescope_find",
             [";"] = "telescope_grep",
           },
         },
