@@ -91,6 +91,8 @@ fi
 codium --install-extension ddiu8081.moegi-theme
 codium --install-extension miguelsolorio.fluent-icons
 codium --install-extension PKief.material-icon-theme
+codium --install-extension Dart-Code.flutter
+codium --install-extension Dart-Code.dart-code
 
 ###########################################################
 # CUSTOM INSTALLERS
@@ -122,6 +124,16 @@ if ! [[ $(sdkmanager --version) ]]; then
 			--name pixel_7_a35 \
 			--package 'system-images;android-35;google_apis;x86_64' \
 			--device 31
+fi
+
+if ! [[ $(flutter --version) ]]; then
+	mkdir -p $HOME/Android/Sdk/
+
+	FLUTTER=$(mktemp)
+
+	curl -Lo $FLUTTER "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz" &&
+		tar -xvf $FLUTTER --directory $HOME/Android/Sdk/ &&
+		yes | $HOME/Android/Sdk/flutter/bin/flutter doctor --android-licenses
 fi
 
 if ! [[ $(fc-list | grep 'JetBrainsMonoNL') ]]; then
@@ -355,6 +367,10 @@ echo -e "$(
 
 		if not contains "$HOME/Android/Sdk/emulator" $PATH
 				set -x PATH "$HOME/Android/Sdk/emulator" $PATH
+		end
+
+		if not contains "$HOME/Android/Sdk/flutter/bin" $PATH
+				set -x PATH "$HOME/Android/Sdk/flutter/bin" $PATH
 		end
 	EOF
 )" | tee $HOME/.config/fish/config.fish &>/dev/null
