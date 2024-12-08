@@ -1,0 +1,5 @@
+[font]
+normal = ["JetBrainsMono Nerd Font"]
+size = 12.5
+hinting = "full"
+edging = "subantialias"
