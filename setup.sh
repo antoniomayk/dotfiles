@@ -45,7 +45,7 @@ DEBIAN_FRONTEND=noninteractive
 
 echo -e "\e[32mInstalling (nala curl gnupg fasttrack-archive-keyring)\e[0m"
 
-sudo apt install -y nala curl gnupg fasttrack-archive-keyring &>/dev/null
+sudo apt install -y nala curl gnupg fasttrack-archive-keyring stow imvirt &>/dev/null
 
 echo -e "\e[32mAdding new deb sources\e[0m"
 
@@ -90,7 +90,7 @@ sudo nala upgrade -y
 
 PROGRAMMING_LANGUAGES_AND_TOOLS='golang openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose'
 VESION_CONTROL='git git-lfs'
-TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep imvirt'
+TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep'
 INDIC_FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam'
 OTHER_REGIONAL_FONTS='fonts-kalapi fonts-lao fonts-lklug-sinhala fonts-tibetan-machine fonts-thai-tlwg'
 GENERAL_FONTS='fonts-cantarell fonts-dejavu-core fonts-droid-fallback fonts-firacode fonts-freefont-ttf fonts-indic fonts-jetbrains-mono fonts-kacst fonts-kacst-one fonts-liberation fonts-liberation2 fonts-mathjax fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-color-emoji fonts-noto-extra fonts-noto-mono fonts-noto-ui-core fonts-noto-ui-extra fonts-opensymbol fonts-sil-abyssinica fonts-sil-annapurna fonts-sil-padauk fonts-ubuntu fonts-urw-base35 fonts-yrsa-rasa'
@@ -109,10 +109,8 @@ if is_nvidia; then
 	NVIDIA='nvidia-driver firmware-misc-nonfree nvidia-cuda-dev nvidia-cuda-toolkit'
 fi
 
-if is_physical; then
-	VIRTBOX='virtualbox-guest-x11 virtualbox-guest-utils'
-else
-	VIRTBOX='virtualbox virtualbox-ext-pack'
+if ! is_physical; then
+	VMWARE='open-vm-tools'
 fi
 
 ###########################################################
@@ -125,7 +123,7 @@ sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL \
 	$TERMINAL_UTILITIES $INDIC_FONTS $OTHER_REGIONAL_FONTS $GENERAL_FONTS \
 	$THAI_FONTS $UTILITIES $FILE_MANAGMENT $DESKTOP_TOOLS $THEMES_AND_ICONS \
 	$SECURITY_TOOLS $TERMINALS $CODE_EDITORS $PACKAGE_MANAGEMENT $FLUTTER \
-	$NVIDIA $VIRTBOX $WEB_BROWSERS
+	$NVIDIA $VMWARE $WEB_BROWSERS
 
 sudo nala remove -y zutty gnome-terminal &>/dev/null
 
@@ -293,10 +291,6 @@ echo -e "$(
 		Name=Neovide
 		GenericName=Text Editor
 		Comment=Edit text files
-		# TryExec=~/.cargo/bin/neovide
-		# TryExec=neovide
-		# Exec=~/.cargo/bin/neovide %F
-		# Exec=neovide %F
 		Exec=bash -c '~/.cargo/bin/neovide %F'
 		Terminal=false
 		Type=Application
@@ -365,20 +359,23 @@ SCIENCE='io.github.Qalculate'
 
 echo -e "\e[32mCopying themes & icons to User home...\e[0m"
 
+mkdir -p $HOME/.themes
+mkdir -p $HOME/.icons
+
 cp -r /usr/share/themes/* $HOME/.themes/
 cp -r /usr/share/icons/* $HOME/.icons/
 
 echo -e "\e[32mInstalling Flatpaks...\e[0m"
 
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo >/dev/null
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-sudo flatpak override --filesystem=$HOME/.themes >/dev/null
-sudo flatpak override --filesystem=$HOME/.icons >/dev/null
+sudo flatpak override --filesystem=$HOME/.themes
+sudo flatpak override --filesystem=$HOME/.icons
 
-flatpak override --user --filesystem=xdg-config/gtk-3.0:ro >/dev/null
+flatpak override --user --filesystem=xdg-config/gtk-3.0:ro
 
-flatpak install -y --noninteractive runtime/org.gnome.Platform/x86_64/3.24 &>/dev/null
-flatpak install -y --noninteractive flathub $NETWORKING $AUDIO_AND_VIDEO $PRODUCTIVITY $GRAPHICS_AND_PHOTOGRAPHY $SCIENCE &>/dev/null
+flatpak install -y --noninteractive runtime/org.gnome.Platform/x86_64/3.24
+flatpak install -y --noninteractive flathub $NETWORKING $AUDIO_AND_VIDEO $PRODUCTIVITY $GRAPHICS_AND_PHOTOGRAPHY $SCIENCE
 
 ###########################################################
 # PAPIRUS ICON THEME
@@ -465,7 +462,7 @@ echo -e "\e[32mSetting Fish aliases...\e[0m"
 
 echo "$(
 	cat <<-EOF
-		alias -s b   "bat"
+		alias -s b   "batcat"
 		alias -s l   "exa"
 		alias -s la  "exa -a"
 		alias -s ll  "exa -l"
@@ -476,9 +473,14 @@ echo "$(
 	EOF
 )" | fish -c "source -" &>/dev/null
 
-echo -e "\e[32mSetting Fish desktop name...\e[0m"
+###########################################################
+# SETUP DESKTOP NAMES
+###########################################################
+
+echo -e "\e[32mSetting .desktop names...\e[0m"
 
 sudo sed -i 's/^Name=fish$/Name=Fish/' /usr/share/applications/fish.desktop
+sudo sed -i 's/^Name=kitty$/Name=Kitty/' /usr/share/applications/fish.desktop
 
 ###########################################################
 # CREATE LINKS

@@ -17,10 +17,15 @@ return {
       haskell = { "fourmolu", "stylish-haskell" },
       java = { "google-java-format" },
       scala = { "scalafmt" },
+      dart = { "dart_format" },
       xml = { "xmlformat" },
       default_format_opts = {
         lsp_format = "never",
       },
+    },
+    format_on_save = {
+      lsp_format = "fallback",
+      timeout_ms = 10000,
     },
   },
 }
