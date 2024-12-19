@@ -88,9 +88,9 @@ sudo nala upgrade -y
 # PKGs
 ###########################################################
 
-PROGRAMMING_LANGUAGES_AND_TOOLS='golang openjdk-17-jdk maven nodejs npm python3-venv build-essential clang cmake ninja-build ccache docker docker-compose'
+PROGRAMMING_LANGUAGES_AND_TOOLS='build-essential clang cmake ninja-build'
 VESION_CONTROL='git git-lfs'
-TERMINAL_UTILITIES='fish tmux tmux-plugin-manager dconf-cli gettext bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep imvirt'
+TERMINAL_UTILITIES='fish tmux tmux-plugin-manager bat fd-find exa xclip trash-cli neofetch fzf zoxide tree curl wget tldr man-db scdoc ripgrep imvirt stow'
 INDIC_FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam'
 OTHER_REGIONAL_FONTS='fonts-kalapi fonts-lao fonts-lklug-sinhala fonts-tibetan-machine fonts-thai-tlwg'
 GENERAL_FONTS='fonts-cantarell fonts-dejavu-core fonts-droid-fallback fonts-firacode fonts-freefont-ttf fonts-indic fonts-jetbrains-mono fonts-kacst fonts-kacst-one fonts-liberation fonts-liberation2 fonts-mathjax fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-color-emoji fonts-noto-extra fonts-noto-mono fonts-noto-ui-core fonts-noto-ui-extra fonts-opensymbol fonts-sil-abyssinica fonts-sil-annapurna fonts-sil-padauk fonts-ubuntu fonts-urw-base35 fonts-yrsa-rasa'
@@ -99,20 +99,11 @@ UTILITIES='dconf-cli gettext gnome-screenshot'
 FILE_MANAGMENT='unrar unzip zip xz-utils'
 DESKTOP_TOOLS='cinnamon-core lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
 THEMES_AND_ICONS='papirus-icon-theme'
-TERMINALS='alacritty kitty'
-PACKAGE_MANAGEMENT='flatpak'
-CODE_EDITORS='codium'
-FLUTTER='libc6:amd64 libstdc++6:amd64 lib32z1 libbz2-1.0:amd64 libglu1-mesa libgtk-3-dev'
-WEB_BROWSERS='firefox-esr google-chrome-stable'
+TERMINALS='kitty'
+WEB_BROWSERS='firefox-esr'
 
 if is_nvidia; then
 	NVIDIA='nvidia-driver firmware-misc-nonfree nvidia-cuda-dev nvidia-cuda-toolkit'
-fi
-
-if is_physical; then
-	VIRTBOX='virtualbox-guest-x11 virtualbox-guest-utils'
-else
-	VIRTBOX='virtualbox virtualbox-ext-pack'
 fi
 
 ###########################################################
@@ -128,116 +119,6 @@ sudo nala install -y $PROGRAMMING_LANGUAGES_AND_TOOLS $VESION_CONTROL \
 	$NVIDIA $VIRTBOX $WEB_BROWSERS
 
 sudo nala remove -y zutty gnome-terminal &>/dev/null
-
-###########################################################
-# VSCODIUM
-###########################################################
-
-echo -e "\e[32mInstalling VSCodium extensions...\e[0m"
-
-codium --install-extension ddiu8081.moegi-theme >/dev/null
-codium --install-extension miguelsolorio.fluent-icons >/dev/null
-codium --install-extension PKief.material-icon-theme >/dev/null
-codium --install-extension Dart-Code.flutter >/dev/null
-codium --install-extension Dart-Code.dart-code >/dev/null
-
-###########################################################
-# CUSTOM INSTALLERS
-###########################################################
-
-if ! type cargo >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [rustup]...\e[0m"
-
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-fi
-
-if ! type neovide >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [neovide]...\e[0m"
-
-	cargo install --git https://github.com/neovide/neovide
-fi
-
-if ! type btm >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [btm]...\e[0m"
-
-	cargo install --git https://github.com/ClementTsang/bottom
-fi
-
-if ! type lazydocker >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [lazydocker]...\e[0m"
-
-	go install github.com/jesseduffield/lazydocker@v0.19.0
-fi
-
-if ! type lazygit >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [lazygit]...\e[0m"
-
-	go install github.com/jesseduffield/lazygit@v0.39.4
-fi
-
-if ! type papirus-folders >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [papirus-folders]...\e[0m"
-
-	wget -qO- https://git.io/papirus-folders-install | sh && papirus-folders -C grey
-fi
-
-if ! type sdkmanager >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [android-sdk]...\e[0m"
-
-	mkdir -p $HOME/Android/Sdk/
-
-	COMMANDLINETOOLS=$(mktemp)
-	COMMANDLINETOOLS_X=$(mktemp -d)
-
-	curl -Lo $COMMANDLINETOOLS "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip" &&
-		unzip $COMMANDLINETOOLS -d $COMMANDLINETOOLS_X &&
-		yes | $COMMANDLINETOOLS_X/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/Android/Sdk \
-			'cmdline-tools;latest' \
-			'emulator' \
-			'platform-tools' \
-			'system-images;android-34;google_apis;x86_64' \
-			'system-images;android-35;google_apis;x86_64' \
-			'build-tools;34.0.0' \
-			'build-tools;35.0.0' \
-			'platforms;android-34' \
-			'platforms;android-35' \
-			'sources;android-34' \
-			'sources;android-35' &&
-		$HOME/Android/Sdk/cmdline-tools/latest/bin/avdmanager create avd \
-			--force \
-			--name pixel_7_a35 \
-			--package 'system-images;android-35;google_apis;x86_64' \
-			--device 31 &&
-		$HOME/Android/Sdk/cmdline-tools/latest/bin/avdmanager create avd \
-			--force \
-			--name pixel_7_a34 \
-			--package 'system-images;android-34;google_apis;x86_64' \
-			--device 31
-fi
-
-if ! type flutter >/dev/null 2>&1; then
-	echo -e "\e[32mInstalling [flutter]...\e[0m"
-
-	mkdir -p $HOME/Android/Sdk/
-
-	FLUTTER=$(mktemp)
-
-	curl -Lo $FLUTTER "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz" &&
-		tar -xvf $FLUTTER --directory $HOME/Android/Sdk/ &&
-		yes | $HOME/Android/Sdk/flutter/bin/flutter doctor --android-licenses
-
-fi
-
-if ! fc-list | grep 'JetBrainsMonoNL' >/dev/null; then
-	echo -e "\e[32mInstalling [jetbrains-mono-nf]...\e[0m"
-
-	JETBRAINS_MONO=$(mktemp)
-
-	curl -Lo $JETBRAINS_MONO "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip" &&
-		mkdir -p ~/.local/share/fonts &&
-		unzip $JETBRAINS_MONO -d ~/.local/share/fonts &>/dev/null &&
-		fc-cache -fv
-fi
 
 ###########################################################
 # .DEB PACKAGES
@@ -278,35 +159,6 @@ if ! dpkg-query -W mint-backgrounds-wilma >/dev/null; then
 	curl -Lo $MINT_BACKGROUNDS_WILMA "http://packages.linuxmint.com/pool/main/m/mint-backgrounds-wilma/mint-backgrounds-wilma_1.1_all.deb" &&
 		sudo dpkg -i $MINT_BACKGROUNDS_WILMA
 fi
-
-###########################################################
-# USER .DESKTOPS
-###########################################################
-
-echo -e "\e[32mSettings user .desktops...\e[0m"
-
-mkdir -p $HOME/.local/share/applications
-
-echo -e "$(
-	cat <<-EOF
-		[Desktop Entry]
-		Name=Neovide
-		GenericName=Text Editor
-		Comment=Edit text files
-		# TryExec=~/.cargo/bin/neovide
-		# TryExec=neovide
-		# Exec=~/.cargo/bin/neovide %F
-		# Exec=neovide %F
-		Exec=bash -c '~/.cargo/bin/neovide %F'
-		Terminal=false
-		Type=Application
-		Keywords=Text;editor;
-		Icon=nvim
-		Categories=Utility;TextEditor;
-		StartupNotify=false
-		MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-	EOF
-)" | tee $HOME/.local/share/application/neovide.desktop &>/dev/null
 
 ###########################################################
 # CINNAMON
@@ -352,33 +204,6 @@ dconf write /org/cinnamon/panel-zone-icon-sizes "'[{\"panelId\": 1, \"left\": 0,
 
 cinnamon --replace >/dev/null 2>&1 &
 disown
-
-###########################################################
-# FLATPAK
-###########################################################
-
-NETWORKING='io.github.zen_browser.zen com.discordapp.Discord'
-AUDIO_AND_VIDEO='org.videolan.VLC org.gnome.Rhythmbox3 com.obsproject.Studio'
-PRODUCTIVITY='md.obsidian.Obsidian org.libreoffice.LibreOffice'
-GRAPHICS_AND_PHOTOGRAPHY='org.inkscape.Inkscape org.kde.krita org.gnome.Evince'
-SCIENCE='io.github.Qalculate'
-
-echo -e "\e[32mCopying themes & icons to User home...\e[0m"
-
-cp -r /usr/share/themes/* $HOME/.themes/
-cp -r /usr/share/icons/* $HOME/.icons/
-
-echo -e "\e[32mInstalling Flatpaks...\e[0m"
-
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo >/dev/null
-
-sudo flatpak override --filesystem=$HOME/.themes >/dev/null
-sudo flatpak override --filesystem=$HOME/.icons >/dev/null
-
-flatpak override --user --filesystem=xdg-config/gtk-3.0:ro >/dev/null
-
-flatpak install -y --noninteractive runtime/org.gnome.Platform/x86_64/3.24 &>/dev/null
-flatpak install -y --noninteractive flathub $NETWORKING $AUDIO_AND_VIDEO $PRODUCTIVITY $GRAPHICS_AND_PHOTOGRAPHY $SCIENCE &>/dev/null
 
 ###########################################################
 # PAPIRUS ICON THEME
@@ -465,7 +290,7 @@ echo -e "\e[32mSetting Fish aliases...\e[0m"
 
 echo "$(
 	cat <<-EOF
-		alias -s b   "bat"
+		alias -s b   "batcat"
 		alias -s l   "exa"
 		alias -s la  "exa -a"
 		alias -s ll  "exa -l"
@@ -476,9 +301,14 @@ echo "$(
 	EOF
 )" | fish -c "source -" &>/dev/null
 
-echo -e "\e[32mSetting Fish desktop name...\e[0m"
+###########################################################
+# UPDATE DESKTOP NAMES 
+###########################################################
+
+echo -e "\e[32mUpdatting .desktop...\e[0m"
 
 sudo sed -i 's/^Name=fish$/Name=Fish/' /usr/share/applications/fish.desktop
+sudo sed -i 's/^Name=kitty$/Name=Kitty/' /usr/share/applications/kitty.desktop
 
 ###########################################################
 # CREATE LINKS
@@ -502,6 +332,7 @@ stow -d "$DIR" -t $HOME \
 	-S kitty \
 	-S neovide \
 	-S nvim \
+	-S vim \
 	-S tmux
 
 stow --no-folding -d "$DIR" -t $HOME \
