@@ -68,8 +68,17 @@ curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9461999446FA
 echo 'deb https://brave-browser-apt-release.s3.brave.com/ stable main' | sudo tee /etc/apt/sources.list.d/brave-browser.list
 curl -fsSL 'https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/brave-browser-keyring.gpg >/dev/null
 
+echo 'deb http://repo.vivaldi.com/stable/deb/ stable main' | sudo tee /etc/apt/sources.list.d/vivaldi.list
+curl -fsSL 'http://repo.vivaldi.com/stable/linux_signing_key.pub' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/vivaldi-keyring.gpg >/dev/null
+
 curl -fsSL 'https://repo.nordvpn.com/gpg/nordvpn_public.asc' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/nordvpn.gpg >/dev/null
 echo 'deb https://repo.nordvpn.com/deb/nordvpn/debian stable main' | sudo tee /etc/apt/sources.list.d/nordvpn.list
+
+curl -fsSL 'https://packages.microsoft.com/keys/microsoft.asc' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null
+echo 'deb https://packages.microsoft.com/repos/code stable main' | sudo tee /etc/apt/sources.list.d/vscode.list
+
+curl -fsSL 'https://download.sublimetext.com/sublimehq-pub.gpg' | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg >/dev/null
+echo 'deb https://download.sublimetext.com/ apt/stable/' | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
 ###########################################################
 # PKGs
@@ -78,10 +87,10 @@ echo 'deb https://repo.nordvpn.com/deb/nordvpn/debian stable main' | sudo tee /e
 FONTS='fonts-beng fonts-beng-extra fonts-deva fonts-deva-extra fonts-gargi fonts-gubbi fonts-gujr fonts-gujr-extra fonts-guru fonts-guru-extra fonts-knda fonts-lohit-beng-assamese fonts-lohit-beng-bengali fonts-lohit-deva fonts-lohit-gujr fonts-lohit-guru fonts-lohit-knda fonts-lohit-mlym fonts-lohit-orya fonts-lohit-taml fonts-lohit-taml-classical fonts-lohit-telu fonts-nakula fonts-navilu fonts-orya fonts-orya-extra fonts-pagul fonts-sahadeva fonts-samyak-deva fonts-samyak-gujr fonts-samyak-mlym fonts-samyak-taml fonts-smc fonts-smc-anjalioldlipi fonts-smc-chilanka fonts-smc-dyuthi fonts-smc-gayathri fonts-smc-karumbi fonts-smc-keraleeyam fonts-smc-manjari fonts-smc-meera fonts-smc-rachana fonts-smc-raghumalayalamsans fonts-smc-suruma fonts-smc-uroob fonts-telu fonts-telu-extra fonts-teluguvijayam fonts-kalapi fonts-lao fonts-lklug-sinhala fonts-tibetan-machine fonts-thai-tlwg fonts-cantarell fonts-dejavu-core fonts-droid-fallback fonts-firacode fonts-freefont-ttf fonts-indic fonts-jetbrains-mono fonts-kacst fonts-kacst-one fonts-liberation fonts-liberation2 fonts-mathjax fonts-noto fonts-noto-cjk fonts-noto-cjk-extra fonts-noto-color-emoji fonts-noto-extra fonts-noto-mono fonts-noto-ui-core fonts-noto-ui-extra fonts-opensymbol fonts-sil-abyssinica fonts-sil-annapurna fonts-sil-padauk fonts-ubuntu fonts-urw-base35 fonts-yrsa-rasa fonts-tlwg-garuda fonts-tlwg-garuda-ttf fonts-tlwg-kinnari fonts-tlwg-kinnari-ttf fonts-tlwg-laksaman fonts-tlwg-laksaman-ttf fonts-tlwg-loma fonts-tlwg-loma-ttf fonts-tlwg-mono fonts-tlwg-mono-ttf fonts-tlwg-norasi fonts-tlwg-norasi-ttf fonts-tlwg-purisa fonts-tlwg-purisa-ttf fonts-tlwg-sawasdee fonts-tlwg-sawasdee-ttf fonts-tlwg-typewriter fonts-tlwg-typewriter-ttf fonts-tlwg-typist fonts-tlwg-typist-ttf fonts-tlwg-typo fonts-tlwg-typo-ttf fonts-tlwg-umpush fonts-tlwg-umpush-ttf fonts-tlwg-waree fonts-tlwg-waree-ttf'
 BUILD_TOOLS='build-essential'
 VERSION_CONTROL='git git-lfs'
-TERMINAL_UTILITIES='tmux tmux-plugin-manager ripgrep zoxide exa fd-find bat fzf xclip trash-cli neofetch wget tldr man-db scdoc stow dconf-cli gettext unrar unzip zip xz-utils'
-DESKTOP_TOOLS='cinnamon-core lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
+TERMINAL_UTILITIES='bash-completion tmux tmux-plugin-manager ripgrep zoxide exa fd-find bat fzf xclip trash-cli neofetch wget tldr man-db scdoc stow dconf-cli gettext unrar unzip zip xz-utils'
+DESKTOP_TOOLS='i3 i3status picom nitrogen cinnamon-core lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings'
 THEMES_AND_ICONS='papirus-icon-theme'
-WEB_BROWSERS='brave-browser speech-dispatcher'
+WEB_BROWSERS='brave-browser'
 EDITORS='vim-gtk3'
 OFFICE_AND_DOCUMENT_TOOLS='evince qalculate-gtk'
 TERMINALS='kitty'
@@ -177,12 +186,23 @@ rm -rf \
 	"$HOME/.bash_aliases" \
 	"$HOME/.profile" \
 	"$HOME/.config/bat" \
+	"$HOME/.config/i3" \
+	"$HOME/.config/i3status" \
 	"$HOME/.config/kitty" \
+	"$HOME/.config/nitrogen" \
+	"$HOME/.config/picom" \
+	"$HOME/.config/rofi" \
 	"$HOME/.config/tmux"
 
 stow -d "$DIR/config" -t $HOME \
 	-S bat \
+	-S i3 \
+	-S i3status \
 	-S kitty \
+	-S nitrogen \
+	-S picom \
+	-S rofi \
+	-S dunst \
 	-S tmux
 
 stow -d "$DIR/home" -t $HOME \

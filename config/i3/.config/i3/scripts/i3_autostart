@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+xrandr --output Virtual-1 --auto &
+picom --config ~/.config/picom/picom.conf -b &
+nitrogen --restore &
+setxkbmap -model abnt2 -layout br && setxkbmap -layout us,br && setxkbmap -option 'grp:win_space_toggle' &

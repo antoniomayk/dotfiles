@@ -20,6 +20,7 @@ clear_history() {
             "$HOME"/.sonarlint \
             "$HOME"/.sudo_as_admin_successful \
             "$HOME"/.viminfo \
+            "$HOME"/.wget-hsts \
             "$HOME"/.xsession-errors* &&
         history -c &&
         printf '\033[2J\033[3J\033[1;1H'

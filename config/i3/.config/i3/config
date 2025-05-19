@@ -1,0 +1,40 @@
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+
+include ~/.config/i3/config.d/*.conf
+
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id nm-applet
+
+exec_always --no-startup-id ~/.config/i3/scripts/i3_autostart
+
+bar {
+    mode dock # dock|hide|invisible
+    hidden_state show # hide|show
+    modifier none
+    status_command i3status
+    position top
+    font pango:JetBrainsMono Nerd Font SemiBold 10
+    separator_symbol ""
+    colors {
+        background #000000
+        statusline #ebdbb2
+        separator  #928374
+        focused_workspace  #000000 #000000 #83a598
+        active_workspace   #ebdbb2 #ebdbb2 #000000
+        inactive_workspace #000000 #000000 #928374
+        urgent_workspace   #000000 #000000 #fb4934
+        binding_mode       #000000 #000000 #fb4934
+    }
+    padding 0px 0px 0px 0px
+    tray_output none # primary | none
+    tray_padding 4px
+    workspace_min_width 24
+    workspace_buttons yes
+    strip_workspace_name false
+    strip_workspace_numbers true
+    binding_mode_indicator yes
+}

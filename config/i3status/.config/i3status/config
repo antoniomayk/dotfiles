@@ -1,0 +1,62 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+        output_format   = "i3bar"
+        colors          = true
+        interval        = 5
+        color_good      = "#b8bb26"
+        color_bad       = "#fb4934"
+        color_degraded  = "#fabd2d"
+        markup          = "pango"
+}
+
+order += "volume master"
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "disk /"
+order += "memory"
+order += "cpu_usage"
+order += "tztime localtime"
+
+volume master {
+        format = "<span bgcolor='#000000' foreground='#8EC07C'> 󰕾 %volume </span>"
+        format_muted = "<span bgcolor='#000000' foreground='#D32F2F'> 󰝟 %volume </span>"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+
+wireless _first_ {
+        format_up = "<span bgcolor='#000000' foreground='#83A598'> 󰖩 %quality %essid </span>"
+        format_down = "<span bgcolor='#000000' foreground='#D32F2F'> 󰖪 off </span>"
+}
+
+ethernet _first_ {
+        format_up = "<span bgcolor='#000000' foreground='#83A598'> 󰩠 %ip </span>"
+        format_down = "<span bgcolor='#000000' foreground='#D32F2F'> 󰩠 off </span>"
+}
+
+disk "/" {
+        format = "<span bgcolor='#000000' foreground='#98971A'> 󰋊 %avail </span>"
+        prefix_type = custom
+}
+
+memory {
+        format = "<span bgcolor='#000000' foreground='#B16286'> 󰍛 %used </span>"
+        threshold_degraded = "10%"
+        format_degraded = "MEMORY: %free"
+}
+
+cpu_usage {
+        format = "<span bgcolor='#000000' foreground='#FABD2F'> 󰘚 %usage </span>"
+}
+
+tztime localtime {
+        format = "<span bgcolor='#000000' foreground='#D7BA7D'> 󰸗 %a %d-%m-%Y %I:%M %p </span>"
+}

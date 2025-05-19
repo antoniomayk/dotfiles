@@ -8,10 +8,20 @@ shopt -s histappend
 
 bind -s 'set completion-ignore-case on'
 
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
 if [ -f ~/.bash_aliases ]; then
     . "$HOME/.bash_aliases"
 fi
 
-export EDITOR='vim'
+export EDITOR='nvim'
+
+. "$HOME/.cargo/env"
 
 eval "$(zoxide init bash)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
