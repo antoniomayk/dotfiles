@@ -8,6 +8,10 @@ shopt -s histappend
 
 bind -s 'set completion-ignore-case on'
 
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
 if [ -f ~/.bash_aliases ]; then
     . "$HOME/.bash_aliases"
 fi
