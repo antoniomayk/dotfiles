@@ -34,7 +34,6 @@
     qemu
     resources
     ripgrep
-    swaybg
     tldr
     unrar
     unzip
@@ -43,8 +42,6 @@
     vivaldi-ffmpeg-codecs
     wget
     wike
-    wl-clipboard
-    wlprop
     xclip
     youtube-music
     zip

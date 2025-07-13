@@ -19,9 +19,6 @@ in
             palette
             ;
         })
-        (import ./services { inherit pkgs theme; })
-        (import ./sway.nix { inherit pkgs theme; })
-        (import ./systemd.nix { inherit pkgs; })
         (import ./xdg.nix)
       ];
 

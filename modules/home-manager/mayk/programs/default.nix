@@ -18,10 +18,6 @@
     (import ./neovim.nix { inherit pkgs; })
     (import ./readline.nix)
     (import ./password-store.nix)
-    (import ./rofi.nix { inherit pkgs theme; })
-    (import ./swaylock.nix { inherit pkgs theme; })
-    (import ./vesktop.nix)
-    (import ./waybar.nix { inherit theme; })
     (import ./zathura.nix { inherit palette theme; })
     (import ./zoxide.nix)
   ];
